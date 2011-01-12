@@ -20,5 +20,16 @@ setup(name='gites.walhebcalendar',
       namespace_packages=['gites'],
       include_package_data=True,
       zip_safe=False,
+      extras_require=dict(
+            test=['zope.testing', 'plone.testing', 'mockito']),
       install_requires=[
-          'setuptools'])
+          'ZSI',
+          'Zope2',
+          'collective.monkeypatcher',
+          'grokcore.component',
+          'zope.component',
+          'five.grok',
+          'five.dbevent',
+          'z3c.soap',
+          'setuptools',
+          'z3c.autoinclude'])

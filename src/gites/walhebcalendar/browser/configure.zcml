@@ -1,0 +1,35 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:five="http://namespaces.zope.org/five"
+           xmlns:soap="http://namespaces.zope.org/soap"
+           xmlns:grok="http://namespaces.zope.org/grok"
+           i18n_domain="gites">
+
+   <five:implements
+     class="..zsi.booking_server.addBookingRequest"
+     interface=".interfaces.IBookingRequest"
+     />
+
+   <grok:grok package="."/>
+
+   <soap:view
+     for="..interfaces.ICalendarApplication"
+     methods="addBookingRequest"
+     class=".booking.SOAPBookingManagement"
+     permission="zope2.ManageProperties"/>
+
+   <utility
+       factory="..zsi.booking_server.addBookingRequest"
+       name="http://affinitic.be/booking/addBookingRequest"
+       provides="z3c.soap.interfaces.IZSIRequestType"/>
+
+   <utility
+       factory="..zsi.booking_server.addBookingResponse"
+       name="http://affinitic.be/booking/addBookingRequest"
+       provides="z3c.soap.interfaces.IZSIResponseType"/>
+
+  <subscriber
+    provides="gites.walhebcalendar.browser.interfaces.ISOAPRequestValidator"
+    factory=".validation.AddBookingRequestValidation"
+    for="gites.walhebcalendar.browser.interfaces.IBookingRequest"/>
+
+</configure>
