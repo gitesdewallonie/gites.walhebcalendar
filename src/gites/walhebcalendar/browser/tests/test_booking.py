@@ -11,7 +11,7 @@ import ZSI
 from mockito import when, any
 from gites.walhebcalendar.calendar import calendar_setup
 from gites.walhebcalendar.client import CalendarClient
-from gites.walhebcalendar.testing import CALENDAR_ZSERVER, CALENDAR_ZCA
+from gites.walhebcalendar.testing import CALENDAR_ZSERVER, CALENDAR
 from gites.walhebcalendar.browser.booking import SOAPBookingManagement
 from gites.walhebcalendar.browser.utils import validateARequest
 from gites.walhebcalendar.zsi.booking_client import addBookingRequest
@@ -19,7 +19,7 @@ from gites.walhebcalendar.zsi.booking_server import addBookingResponse
 
 
 class TestAddBooking(unittest.TestCase):
-    layer = CALENDAR_ZCA
+    layer = CALENDAR
 
     def testValidationRequestDates(self):
         bookingRequest = addBookingRequest()
@@ -58,7 +58,7 @@ class TestFunctionalAddBooking(unittest.TestCase):
         import transaction
         transaction.commit()
 
-    def testSimpleAddBooking(self):
+    def testFakeAddBooking(self):
         calendarUrl = self.app.calendar.absolute_url()
         client = CalendarClient(calendarUrl)
         startDate = datetime(2010, 1, 1)
@@ -69,3 +69,11 @@ class TestFunctionalAddBooking(unittest.TestCase):
         when(SOAPBookingManagement).addBookingRequest(any(), any()).thenReturn(response)
         response = client.addBooking(cgtId, startDate, endDate)
         self.assertEqual(response, 1)
+
+    def testAddBooking(self):
+        calendarUrl = self.app.calendar.absolute_url()
+        client = CalendarClient(calendarUrl)
+        startDate = datetime(2012, 1, 1)
+        endDate = datetime(2012, 1, 2)
+        cgtId = 10
+        response = client.addBooking(cgtId, startDate, endDate)

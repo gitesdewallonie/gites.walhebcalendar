@@ -5,16 +5,17 @@ gites.walhebcalendar
 Licensed under the GPL license, see LICENCE.txt for more details.
 Copyright by Affinitic sprl
 """
-from zope.configuration import xmlconfig
-from plone.testing import Layer, z2, zca
+from plone.testing import z2
+from walhebcalendar.db.testing import WalHebRdbWithZope, ZCMLLayer, WALHEBRDB
 
 
-class Calendar(Layer):
+class Calendar(ZCMLLayer):
+    import gites.walhebcalendar
+    tested_package = gites.walhebcalendar
 
-    def setUp(self):
-        configurationContext = self['configurationContext']
-        import gites.walhebcalendar
-        xmlconfig.file('configure.zcml', gites.walhebcalendar, context=configurationContext)
+    def tearDown(self):
+        raise NotImplementedError()
 
-CALENDAR_ZCA = Calendar(bases=(zca.ZCML_DIRECTIVES, ), name='CalendarWithZCMLDirective')
-CALENDAR_ZSERVER = Calendar(bases=(z2.ZSERVER, ), name='CalendarWithZServer')
+CALENDAR = Calendar(name="Calendar")
+
+CALENDAR_ZSERVER = WalHebRdbWithZope(bases=(CALENDAR, WALHEBRDB, z2.ZSERVER), name='CalendarWithZServer')

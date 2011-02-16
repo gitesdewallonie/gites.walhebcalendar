@@ -25,11 +25,12 @@ setup(name='gites.walhebcalendar',
       install_requires=[
           'ZSI',
           'Zope2',
+          'affinitic.pwmanager',
           'collective.monkeypatcher',
           'grokcore.component',
-          'zope.component',
           'five.grok',
           'five.dbevent',
           'z3c.soap',
           'setuptools',
-          'z3c.autoinclude'])
+          'z3c.autoinclude',
+          'walhebcalendar.db'])

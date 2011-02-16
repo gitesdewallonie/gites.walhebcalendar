@@ -49,6 +49,7 @@ class CalendarClient(object):
         bookingRequest._cgtId = cgtId
         bookingRequest._startDate = startDate
         bookingRequest._endDate = endDate
+        bookingRequest._bookingType = bookingType
         response = self.port.addBooking(bookingRequest)
         return response._notificationId
 

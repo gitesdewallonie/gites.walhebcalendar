@@ -7,9 +7,13 @@ Copyright by Affinitic sprl
 """
 from datetime import datetime
 import ZSI
+import grokcore.component as grok
+from gites.walhebcalendar.browser.interfaces import ISOAPRequestValidator, IBookingRequest
 
 
-class AddBookingRequestValidation(object):
+class AddBookingRequestValidation(grok.Subscription):
+    grok.provides(ISOAPRequestValidator)
+    grok.context(IBookingRequest)
 
     def __init__(self, bookingRequest):
         self.bookingRequest = bookingRequest

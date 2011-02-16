@@ -36,7 +36,7 @@ def calendar_setup(app):
 
 
 @grok.subscribe(IDatabaseOpenedWithRootEvent)
-def setupWIWO(event):
+def setupCalendar(event):
     db = event.database
     db_name = db.database_name
     conn = db.open()
