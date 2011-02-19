@@ -32,13 +32,13 @@ def calendar_setup(app):
         logger.info('add application')
         manage_addCalendar(app, CAL_ID)
     calendar = getattr(app, CAL_ID)
-    calendar.manage_permission('Manage properties', ['Authenticated'])
+    calendar.manage_permission('WalhebCalendar: Add Booking', ['Authenticated'])
+    calendar.manage_permission('WalhebCalendar: View Bookings', ['Authenticated'])
 
 
 @grok.subscribe(IDatabaseOpenedWithRootEvent)
 def setupCalendar(event):
     db = event.database
-    db_name = db.database_name
     conn = db.open()
     try:
         root = conn.root()

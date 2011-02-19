@@ -15,7 +15,7 @@
      for="..interfaces.ICalendarApplication"
      methods="addBookingRequest"
      class=".booking.SOAPBookingManagement"
-     permission="zope2.ManageProperties"/>
+     permission="walhebcalendar.AddBooking"/>
 
    <utility
        factory="..zsi.booking_server.addBookingRequest"

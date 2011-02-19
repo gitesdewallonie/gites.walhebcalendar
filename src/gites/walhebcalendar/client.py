@@ -34,9 +34,9 @@ class CalendarClient(object):
         else:
             self.trace = None
 
-
-        kwargs = dict(url=self.url, tracefile=self.trace,
-                      auth=(AUTH.httpbasic, login, passwd))
+        kwargs = dict(url=self.url, tracefile=self.trace)
+        if login and passwd:
+            kwargs['auth'] = (AUTH.httpbasic, login, passwd)
 
         self.port = self.service(**kwargs)
 

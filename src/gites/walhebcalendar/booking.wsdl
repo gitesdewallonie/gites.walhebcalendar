@@ -30,7 +30,7 @@
 						<xsd:simpleType>
 							<xsd:restriction base="xsd:string">
 								<xsd:enumeration value="booked"/>
-								<xsd:enumeration value="disabled"/>
+								<xsd:enumeration value="unavailable"/>
 							</xsd:restriction>
 						</xsd:simpleType>
 					</xsd:element>
@@ -64,7 +64,7 @@
 							<xsd:simpleType>
 								<xsd:restriction base="xsd:string">
 									<xsd:enumeration value="booked"/>
-									<xsd:enumeration value="disabled"/>
+									<xsd:enumeration value="unavailable"/>
 								</xsd:restriction>
 							</xsd:simpleType>
 						</xsd:element>
@@ -92,7 +92,7 @@
 							<xsd:simpleType>
 								<xsd:restriction base="xsd:string">
 									<xsd:enumeration value="booked"/>
-									<xsd:enumeration value="disabled"/>
+									<xsd:enumeration value="unavailable"/>
 									<xsd:enumeration value="available"/>
 								</xsd:restriction>
 							</xsd:simpleType>

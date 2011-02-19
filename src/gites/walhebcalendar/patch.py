@@ -45,6 +45,37 @@ def get_formatted_content_with_date(self, pyobj):
 
 Gregorian.get_formatted_content = get_formatted_content_with_date
 
+from ZSI import EvaluateException
+from ZSI.TCtimes import _dict_to_tuple, _fix_none_fields
+
+
+def text_to_data(self, text, elt, ps):
+    '''convert text into typecode specific data.
+    '''
+    if text is None:
+        return None
+    m = self.lex_pattern.match(text)
+    if not m:
+        raise EvaluateException('Bad Gregorian: %s' %text, ps.Backtrace(elt))
+    try:
+        retval = _dict_to_tuple(m.groupdict())
+    except ValueError:
+        raise
+
+    if self.fix_timezone:
+        retval = _fix_timezone(retval, tz_from = m.groupdict().get('tz'), tz_to = None)
+
+    retval = _fix_none_fields(retval)
+
+    if self.pyclass is not None:
+        return self.pyclass(retval)
+    if isinstance(self, gDate):
+        from datetime import date
+        return date(*retval[:3])
+    return retval
+
+from ZSI.TCtimes import gDate
+gDate.text_to_data = text_to_data
 
 def newMapply(object, positional=(), keyword={},
            debug=None, maybe=None,

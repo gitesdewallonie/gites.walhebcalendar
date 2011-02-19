@@ -5,6 +5,15 @@
     <include package="zope.browserpage" file="meta.zcml"/>
     <include package="z3c.autoinclude" file="meta.zcml" />
     <includeDependencies package="." />
+
+    <permission
+        id="walhebcalendar.AddBooking"
+        title="WalhebCalendar: Add Booking"/>
+
+    <permission
+        id="walhebcalendar.ViewBookings"
+        title="WalhebCalendar: View Bookings"/>
+
     <include package=".browser"/>
 
     <grok:grok package=".calendar"/>
