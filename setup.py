@@ -28,6 +28,7 @@ setup(name='gites.walhebcalendar',
                   'collective.sphinx.includechangelog',
                   'sphinxcontrib-sdedit',
                   'Pillow',
+                  'Sphinx',
                   'collective.sphinx.includedoc']),
       install_requires=[
           'ZSI',
