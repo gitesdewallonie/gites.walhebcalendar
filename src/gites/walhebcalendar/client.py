@@ -8,7 +8,8 @@ Copyright by Affinitic sprl
 import datetime
 from ZSI.auth import AUTH
 from tempfile import mkstemp
-from gites.walhebcalendar.zsi.booking_client import bookingLocator, addBookingRequest
+from gites.walhebcalendar.zsi.booking_client import (bookingLocator, addBookingRequest,
+                                                     getBookingsRequest)
 
 
 class CalendarClient(object):
@@ -52,6 +53,16 @@ class CalendarClient(object):
         bookingRequest._bookingType = bookingType
         response = self.port.addBooking(bookingRequest)
         return response._notificationId
+
+    def getBookings(self, startDate, endDate, cgtIds=[]):
+        if not isinstance(cgtIds, (list, set)):
+            cgtIds = [cgtIds]
+        bookingRequest = getBookingsRequest()
+        bookingRequest._minDate = startDate
+        bookingRequest._maxDate = endDate
+        bookingRequest._cgtId = cgtIds
+        response = self.port.getBookings(bookingRequest)
+        return response._bookings
 
     def close(self):
         self.trace.close()

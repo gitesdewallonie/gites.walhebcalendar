@@ -53,7 +53,8 @@ class TestAddBooking(unittest.TestCase):
             validateARequest(bookingRequest)
 
 
-class TestFunctionalAddBooking(unittest.TestCase):
+class TestFunctional(unittest.TestCase):
+
     layer = CALENDAR_ZSERVER
 
     def setUp(self):
@@ -62,10 +63,123 @@ class TestFunctionalAddBooking(unittest.TestCase):
         app['acl_users'].userFolderAddUser('user1', 'secret', ['Authenticated'], [])
         import transaction
         transaction.commit()
+        self.calendarUrl = self.app.calendar.absolute_url()
+
+
+class TestFunctionalGetBookings(TestFunctional):
+
+    def testGetBookings(self):
+        client = CalendarClient(self.calendarUrl)
+        startDate = date(2012, 1, 1)
+        endDate = date(2012, 1, 2)
+        cgtIds = [10]
+        bookings = client.getBookings(startDate, endDate, cgtIds)
+        self.assertEqual(bookings, [])
+
+    def testAddedThenGetBooking(self):
+        client = CalendarClient(self.calendarUrl)
+        startDate = date(2012, 1, 1)
+        endDate = date(2012, 1, 2)
+        cgtId = 10
+        client.addBooking(cgtId, startDate, endDate)
+        bookings = client.getBookings(startDate, endDate, cgtId)
+        self.assertNotEqual(bookings, [])
+        self.assertEqual(len(bookings), 1)
+        booking = bookings[0]
+        self.assertEqual(booking._cgtId, 10)
+        self.assertEqual(booking._startDate, date(2012, 1, 1))
+        self.assertEqual(booking._endDate, date(2012, 1, 2))
+        self.assertEqual(booking._bookingType, 'booked')
+
+    def testTwoSeparateBookings(self):
+        client = CalendarClient(self.calendarUrl)
+        client.addBooking(10, datetime(2012, 1, 1), datetime(2012, 1, 1))
+        client.addBooking(10, datetime(2012, 1, 3), datetime(2012, 1, 4))
+        bookings = client.getBookings(datetime(2012, 1, 1), datetime(2012, 1, 4), 10)
+        self.assertEqual(len(bookings), 2)
+        booking = bookings[0]
+        self.assertEqual(booking._cgtId, 10)
+        self.assertEqual(booking._startDate, date(2012, 1, 1))
+        self.assertEqual(booking._endDate, date(2012, 1, 1))
+        self.assertEqual(booking._bookingType, 'booked')
+        booking = bookings[1]
+        self.assertEqual(booking._cgtId, 10)
+        self.assertEqual(booking._startDate, date(2012, 1, 3))
+        self.assertEqual(booking._endDate, date(2012, 1, 4))
+        self.assertEqual(booking._bookingType, 'booked')
+
+    def testTwoBookingTypeSameDates(self):
+        client = CalendarClient(self.calendarUrl)
+        client.addBooking(10, datetime(2012, 1, 1), datetime(2012, 1, 1),
+                          'unavailable')
+        client.addBooking(10, datetime(2012, 1, 2), datetime(2012, 1, 2))
+        bookings = client.getBookings(datetime(2012, 1, 1), datetime(2012, 1, 2), [10, 11])
+        self.assertEqual(len(bookings), 2)
+        booking = bookings[0]
+        self.assertEqual(booking._cgtId, 10)
+        self.assertEqual(booking._startDate, date(2012, 1, 1))
+        self.assertEqual(booking._endDate, date(2012, 1, 1))
+        self.assertEqual(booking._bookingType, 'unavailable')
+        booking = bookings[1]
+        self.assertEqual(booking._cgtId, 10)
+        self.assertEqual(booking._startDate, date(2012, 1, 2))
+        self.assertEqual(booking._endDate, date(2012, 1, 2))
+        self.assertEqual(booking._bookingType, 'booked')
+        client.addBooking(10, datetime(2012, 1, 1), datetime(2012, 1, 2), 'unavailable')
+        bookings = client.getBookings(datetime(2012, 1, 1), datetime(2012, 1, 2), [10, 11])
+        self.assertEqual(len(bookings), 1)
+        booking = bookings[0]
+        self.assertEqual(booking._cgtId, 10)
+        self.assertEqual(booking._startDate, date(2012, 1, 1))
+        self.assertEqual(booking._endDate, date(2012, 1, 2))
+        self.assertEqual(booking._bookingType, 'unavailable')
+
+    def testTwoCGTIdsSameDates(self):
+        client = CalendarClient(self.calendarUrl)
+        client.addBooking(10, datetime(2012, 1, 1), datetime(2012, 1, 1))
+        client.addBooking(10, datetime(2012, 1, 2), datetime(2012, 1, 2))
+        client.addBooking(11, datetime(2012, 1, 1), datetime(2012, 1, 2))
+        bookings = client.getBookings(datetime(2012, 1, 1), datetime(2012, 1, 2), [10, 11])
+        self.assertEqual(len(bookings), 2)
+        booking = bookings[0]
+        self.assertEqual(booking._cgtId, 10)
+        self.assertEqual(booking._startDate, date(2012, 1, 1))
+        self.assertEqual(booking._endDate, date(2012, 1, 2))
+        self.assertEqual(booking._bookingType, 'booked')
+        booking = bookings[1]
+        self.assertEqual(booking._cgtId, 11)
+        self.assertEqual(booking._startDate, date(2012, 1, 1))
+        self.assertEqual(booking._endDate, date(2012, 1, 2))
+        self.assertEqual(booking._bookingType, 'booked')
+
+    def testGetAllBookings(self):
+        client = CalendarClient(self.calendarUrl)
+        client.addBooking(10, datetime(2012, 1, 1), datetime(2012, 1, 4))
+        client.addBooking(11, datetime(2012, 1, 1), datetime(2012, 1, 2))
+        client.addBooking(12, datetime(2012, 1, 2), datetime(2012, 1, 6))
+        bookings = client.getBookings(datetime(2012, 1, 1), datetime(2012, 1, 2))
+        self.assertEqual(len(bookings), 3)
+        booking = bookings[0]
+        self.assertEqual(booking._cgtId, 10)
+        self.assertEqual(booking._startDate, date(2012, 1, 1))
+        self.assertEqual(booking._endDate, date(2012, 1, 2))
+        self.assertEqual(booking._bookingType, 'booked')
+        booking = bookings[1]
+        self.assertEqual(booking._cgtId, 11)
+        self.assertEqual(booking._startDate, date(2012, 1, 1))
+        self.assertEqual(booking._endDate, date(2012, 1, 2))
+        self.assertEqual(booking._bookingType, 'booked')
+        booking = bookings[2]
+        self.assertEqual(booking._cgtId, 12)
+        self.assertEqual(booking._startDate, date(2012, 1, 2))
+        self.assertEqual(booking._endDate, date(2012, 1, 2))
+        self.assertEqual(booking._bookingType, 'booked')
+
+
+class TestFunctionalAddBooking(TestFunctional):
 
     def testWrongUser(self):
-        calendarUrl = self.app.calendar.absolute_url()
-        client = CalendarClient(calendarUrl, login='foobar', passwd='secret')
+        client = CalendarClient(self.calendarUrl, login='foobar', passwd='secret')
         startDate = date(2012, 1, 1)
         endDate = date(2012, 1, 2)
         cgtId = 10
@@ -74,8 +188,7 @@ class TestFunctionalAddBooking(unittest.TestCase):
             client.addBooking(cgtId, startDate, endDate)
 
     def testAnonymous(self):
-        calendarUrl = self.app.calendar.absolute_url()
-        client = CalendarClient(calendarUrl, login=None, passwd=None)
+        client = CalendarClient(self.calendarUrl, login=None, passwd=None)
         startDate = date(2012, 1, 1)
         endDate = date(2012, 1, 2)
         cgtId = 10
@@ -83,9 +196,8 @@ class TestFunctionalAddBooking(unittest.TestCase):
         with self.assertRaisesRegexp(RuntimeError, msg_re):
             client.addBooking(cgtId, startDate, endDate)
 
-    def XXtestFakeAddBooking(self):
-        calendarUrl = self.app.calendar.absolute_url()
-        client = CalendarClient(calendarUrl)
+    def testFakeAddBooking(self):
+        client = CalendarClient(self.calendarUrl)
         startDate = datetime(2010, 1, 1)
         endDate = datetime(2010, 1, 2)
         cgtId = 1
@@ -97,8 +209,7 @@ class TestFunctionalAddBooking(unittest.TestCase):
         unstub()
 
     def testAddedBooking(self):
-        calendarUrl = self.app.calendar.absolute_url()
-        client = CalendarClient(calendarUrl)
+        client = CalendarClient(self.calendarUrl)
         startDate = date(2012, 1, 1)
         endDate = date(2012, 1, 2)
         cgtId = 10
@@ -116,8 +227,7 @@ class TestFunctionalAddBooking(unittest.TestCase):
         self.assertEqual(bookings[0].book_booking_type, u'booked')
 
     def testAddedAndUpdatedBooking(self):
-        calendarUrl = self.app.calendar.absolute_url()
-        client = CalendarClient(calendarUrl)
+        client = CalendarClient(self.calendarUrl)
         startDate = date(2012, 1, 1)
         endDate = date(2012, 1, 2)
         cgtId = 10
@@ -148,8 +258,7 @@ class TestFunctionalAddBooking(unittest.TestCase):
         self.assertEqual(bookings[0].book_booking_type, u'unavailable')
 
     def testBookingNotificationLink(self):
-        calendarUrl = self.app.calendar.absolute_url()
-        client = CalendarClient(calendarUrl)
+        client = CalendarClient(self.calendarUrl)
         startDate = date(2012, 1, 1)
         endDate = date(2012, 1, 2)
         cgtId = 10
@@ -161,7 +270,7 @@ class TestFunctionalAddBooking(unittest.TestCase):
         booking = notification.createdBookings[0]
         self.assertEqual(booking.creation_notification, notification)
         self.assertEqual(booking.update_notification, None)
-        client = CalendarClient(calendarUrl)
+        client = CalendarClient(self.calendarUrl)
         startDate = date(2012, 1, 1)
         endDate = date(2012, 1, 1)
         cgtId = 10
@@ -177,8 +286,7 @@ class TestFunctionalAddBooking(unittest.TestCase):
     def testUpdateTwice(self):
         db = getUtility(IDatabase, name='pg')
         session = db.session
-        calendarUrl = self.app.calendar.absolute_url()
-        client = CalendarClient(calendarUrl)
+        client = CalendarClient(self.calendarUrl)
         startDate = date(2012, 1, 1)
         endDate = date(2012, 1, 2)
         cgtId = 999
@@ -193,8 +301,7 @@ class TestFunctionalAddBooking(unittest.TestCase):
         self.assertEqual(len(updateNotf.relatedBookings), 0)
 
     def testAddBooking(self):
-        calendarUrl = self.app.calendar.absolute_url()
-        client = CalendarClient(calendarUrl)
+        client = CalendarClient(self.calendarUrl)
         startDate = date(2012, 1, 1)
         endDate = date(2012, 1, 2)
         cgtId = 10
@@ -220,8 +327,7 @@ class TestFunctionalAddBooking(unittest.TestCase):
         self.assertEqual(notifications[0].notf_booking_type, 'booked')
 
     def testAddUnavailableBooking(self):
-        calendarUrl = self.app.calendar.absolute_url()
-        client = CalendarClient(calendarUrl)
+        client = CalendarClient(self.calendarUrl)
         startDate = date(2012, 1, 1)
         endDate = date(2012, 1, 2)
         cgtId = 10

@@ -6,7 +6,12 @@
 
    <five:implements
      class="..zsi.booking_server.addBookingRequest"
-     interface=".interfaces.IBookingRequest"
+     interface=".interfaces.IAddBookingRequest"
+     />
+
+   <five:implements
+     class="..zsi.booking_server.getBookingsRequest"
+     interface=".interfaces.IGetBookingRequest"
      />
 
    <grok:grok package="."/>
@@ -17,6 +22,12 @@
      class=".booking.SOAPBookingManagement"
      permission="walhebcalendar.AddBooking"/>
 
+   <soap:view
+     for="..interfaces.ICalendarApplication"
+     methods="getBookingsRequest"
+     class=".booking.SOAPBookingManagement"
+     permission="walhebcalendar.ViewBookings"/>
+
    <utility
        factory="..zsi.booking_server.addBookingRequest"
        name="http://affinitic.be/booking/addBookingRequest"
@@ -25,6 +36,16 @@
    <utility
        factory="..zsi.booking_server.addBookingResponse"
        name="http://affinitic.be/booking/addBookingRequest"
+       provides="z3c.soap.interfaces.IZSIResponseType"/>
+
+   <utility
+       factory="..zsi.booking_server.getBookingsRequest"
+       name="http://affinitic.be/booking/getBookingsRequest"
+       provides="z3c.soap.interfaces.IZSIRequestType"/>
+
+   <utility
+       factory="..zsi.booking_server.getBookingsResponse"
+       name="http://affinitic.be/booking/getBookingsRequest"
        provides="z3c.soap.interfaces.IZSIResponseType"/>
 
 </configure>

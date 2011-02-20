@@ -6,6 +6,7 @@ Licensed under the GPL license, see LICENCE.txt for more details.
 Copyright by Affinitic sprl
 """
 from zope.component import subscribers
+from AccessControl.SecurityManagement import getSecurityManager
 from gites.walhebcalendar.browser.interfaces import ISOAPRequestValidator
 
 
@@ -21,3 +22,9 @@ def validate(f):
         return f(self, requestData, response)
     validateRequest.__doc__ = f.__doc__
     return validateRequest
+
+
+def getUsername():
+    user = getSecurityManager().getUser()
+    username = user.getUserName()
+    return unicode(username)

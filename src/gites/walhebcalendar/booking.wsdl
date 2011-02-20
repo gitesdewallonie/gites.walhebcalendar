@@ -5,13 +5,6 @@
 	targetNamespace="http://affinitic.be/booking">
 	<wsdl:types>
 		<xsd:schema targetNamespace="http://affinitic.be/booking">
-			<!--xsd:element name="addBooking">
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element name="in" type="tns:booking"/>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element -->
 			<xsd:element name="addBookingResponse">
 				<xsd:complexType>
 					<xsd:sequence>
@@ -56,11 +49,11 @@
 			</xsd:element>
 
 			    <xsd:complexType name="booking">
-					<xsd:sequence maxOccurs="unbounded" minOccurs="0">
-						<xsd:element name="cgtId" type="xsd:int" minOccurs="1"> </xsd:element>
-						<xsd:element name="startDate" type="xsd:date" minOccurs="1"> </xsd:element>
-						<xsd:element name="endDate" type="xsd:date" minOccurs="1"> </xsd:element>
-						<xsd:element name="bookingType" minOccurs="0">
+					<xsd:sequence minOccurs="0">
+						<xsd:element name="cgtId" type="xsd:int" minOccurs="1" maxOccurs="1"> </xsd:element>
+						<xsd:element name="startDate" type="xsd:date" minOccurs="1" maxOccurs="1"> </xsd:element>
+						<xsd:element name="endDate" type="xsd:date" minOccurs="1" maxOccurs="1"> </xsd:element>
+						<xsd:element name="bookingType" minOccurs="1" maxOccurs="1">
 							<xsd:simpleType>
 								<xsd:restriction base="xsd:string">
 									<xsd:enumeration value="booked"/>

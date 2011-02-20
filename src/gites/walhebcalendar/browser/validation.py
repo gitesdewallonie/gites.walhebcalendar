@@ -8,12 +8,12 @@ Copyright by Affinitic sprl
 from datetime import date
 import ZSI
 import grokcore.component as grok
-from gites.walhebcalendar.browser.interfaces import ISOAPRequestValidator, IBookingRequest
+from gites.walhebcalendar.browser.interfaces import ISOAPRequestValidator, IAddBookingRequest
 
 
 class AddBookingRequestValidation(grok.Subscription):
     grok.provides(ISOAPRequestValidator)
-    grok.context(IBookingRequest)
+    grok.context(IAddBookingRequest)
 
     def __init__(self, bookingRequest):
         self.bookingRequest = bookingRequest
