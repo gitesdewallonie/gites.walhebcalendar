@@ -1,0 +1,7 @@
+====
+WSDL
+====
+
+
+.. literalinclude:: booking.wsdl
+    :language: xml

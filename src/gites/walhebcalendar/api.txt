@@ -1,0 +1,62 @@
+===
+API
+===
+
+Inventory
+=========
+
+Base types
+----------
+
+.. module:: arsia.webservice.core.inventory.animal
+
+.. autoclass:: BaseWSAnimal
+    :members:
+    :show-inheritance:
+    :inherited-members:
+
+.. module:: arsia.webservice.opa.inventory.animal
+
+.. autoclass:: OPAWSAnimal
+    :members:
+    :show-inheritance:
+    :inherited-members:
+
+
+Interfaces
+----------
+
+.. autointerface:: gites.walhebcalendar.browser.interfaces.ISOAPRequestValidator
+
+
+
+Validation Event
+----------------
+
+.. module:: arsia.webservice.opa.inventory.validation
+
+.. autoclass:: OPATroupeauValidator
+    :members:
+    :show-inheritance:
+    :inherited-members:
+
+View
+----
+
+.. module:: arsia.webservice.opa.inventory.inventory
+
+.. autoclass:: SOAPOPAInventoryView
+    :members:
+    :show-inheritance:
+    :inherited-members:
+
+    .. automethod:: getInventory
+    .. automethod:: animal
+
+        Animal list of properties to fetch into AFSCA db
+
+
+
+
+Movement
+========

@@ -1,0 +1,28 @@
+WalhebCalendar documentation
+============================
+
+Contents:
+
+.. toctree::
+   :maxdepth: 2
+
+   wsdl
+   api
+   diag
+   changelog
+   diag
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
+Modules
+=======
+
+
+.. toctree::
+   :maxdepth: 2
+

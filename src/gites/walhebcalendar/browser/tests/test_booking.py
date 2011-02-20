@@ -19,14 +19,41 @@ from gites.walhebcalendar.client import CalendarClient
 from gites.walhebcalendar.testing import CALENDAR_ZSERVER, CALENDAR
 from gites.walhebcalendar.browser.booking import SOAPBookingManagement
 from gites.walhebcalendar.browser.utils import validateARequest
-from gites.walhebcalendar.zsi.booking_client import addBookingRequest
+from gites.walhebcalendar.zsi.booking_client import addBookingRequest, getBookingsRequest
 from gites.walhebcalendar.zsi.booking_server import addBookingResponse
 
 
 class TestAddBooking(unittest.TestCase):
     layer = CALENDAR
 
-    def testValidationRequestDates(self):
+    def testValidationGetRequestDates(self):
+        bookingRequest = getBookingsRequest()
+        bookingRequest._cgtId = [1]
+        bookingRequest._minDate = date(2011, 1, 2)
+        bookingRequest._maxDate = date(2011, 1, 1)
+        msg_re = "Booking date in the past"
+        with self.assertRaisesRegexp(ZSI.Fault, msg_re):
+            validateARequest(bookingRequest)
+
+    def testValidationGetRequestMaxCGTId(self):
+        bookingRequest = getBookingsRequest()
+        bookingRequest._cgtId = range(1, 1002)
+        bookingRequest._minDate = date(2012, 1, 2)
+        bookingRequest._maxDate = date(2012, 1, 9)
+        msg_re = "Too many CGT ids. Maximum is 1000. If you provide no CGT id, the system will return the bookings for all CGT ids"
+        with self.assertRaisesRegexp(ZSI.Fault, msg_re):
+            validateARequest(bookingRequest)
+
+    def testValidationGetRequestCGTId(self):
+        bookingRequest = getBookingsRequest()
+        bookingRequest._cgtId = [-100]
+        bookingRequest._minDate = date(2012, 1, 2)
+        bookingRequest._maxDate = date(2012, 1, 9)
+        msg_re = "Wrong CGT Id. Must be greater than 0"
+        with self.assertRaisesRegexp(ZSI.Fault, msg_re):
+            validateARequest(bookingRequest)
+
+    def testValidationAddRequestDates(self):
         bookingRequest = addBookingRequest()
         bookingRequest._cgtId = 1
         bookingRequest._startDate = date(2011, 1, 2)

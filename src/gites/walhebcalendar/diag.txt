@@ -1,0 +1,13 @@
+Sequence diagrams
+=================
+
+
+.. sequence-diagram::
+
+   actor:Actor
+   calendar:Walhebcalendar
+   db:WalhebcalendarDB
+
+   actor:calendar.make html(foo, bar)
+   calendar:db.render_diagram()
+   db:db.render_diagram()
