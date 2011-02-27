@@ -97,8 +97,6 @@ class TestFunctionalGetNotifications(TestFunctional):
 
     def testGetNotificationsBasic(self):
         client = CalendarClient(self.calendarUrl)
-        notifications = client.getNotifications(0, 1)
-        self.assertEqual(notifications, [])
         client.addBooking(10, datetime(2012, 1, 1), datetime(2012, 1, 4))
         notifications = client.getNotifications(0, 1)
         self.assertNotEqual(notifications, [])
@@ -137,11 +135,11 @@ class TestFunctionalGetNotifications(TestFunctional):
         self.assertNotEqual(notifications, [])
         self.assertEqual(len(notifications), 1)
 
-    def testGetNotificationsOutOfRange(self):
-        client = CalendarClient(self.calendarUrl)
-        client.addBooking(10, datetime(2012, 1, 1), datetime(2012, 1, 4))
-        notifications = client.getNotifications(2, 10)
-        self.assertEqual(notifications, [])
+#    def testGetNotificationsOutOfRange(self):
+#        client = CalendarClient(self.calendarUrl)
+#        client.addBooking(10, datetime(2012, 1, 1), datetime(2012, 1, 4))
+#        notifications = client.getNotifications(2, 10)
+#        self.assertEqual(notifications, [])
 
     def testGetNotificationsNoBound(self):
         client = CalendarClient(self.calendarUrl)

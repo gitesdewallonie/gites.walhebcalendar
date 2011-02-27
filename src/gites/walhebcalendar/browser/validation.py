@@ -46,19 +46,23 @@ class GetNotificationsRequestValidation(BaseValidation):
 
     def testLowerToMaxId(self):
         db = getUtility(IDatabase, name='pg')
-        query = db.session.query(func.max(Notification.notf_id))
-        maxNotfId = query.one()
-        if self.minNotfId > maxNotfId or self.maxNotfId < maxNotfId:
+        query = db.session.query(func.max(Notification.notf_id).label('maxId'))
+        maxNotfId = query.one().maxId
+        if maxNotfId is None:
+            maxNotfId = 0
+        if self.minNotfId > maxNotfId or \
+           (self.maxNotfId is not None and (self.maxNotfId > maxNotfId)):
             raise ZSI.Fault(ZSI.Fault.Client,
                             u"minNotificationId and maxNotificationId must be lower or equal to the current maximum notification id")
 
     def testSuperiorToZero(self):
-        if self.minNotfId < 0 or self.maxNotfId < 0:
+        if self.minNotfId < 0 or \
+           (self.maxNotfId is not None and self.maxNotfId < 0):
             raise ZSI.Fault(ZSI.Fault.Client,
                             u"minNotificationId and maxNotificationId must be higher or equal to 0")
 
     def testNotfIdOrder(self):
-        if self.minNotfId > self.maxNotfId:
+        if self.maxNotfId is not None and (self.minNotfId > self.maxNotfId):
             raise ZSI.Fault(ZSI.Fault.Client,
                             u"minNotificationId must be lower or equal to maxNotificationId")
 
