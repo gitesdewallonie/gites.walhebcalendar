@@ -93,6 +93,76 @@ class TestFunctional(unittest.TestCase):
         self.calendarUrl = self.app.calendar.absolute_url()
 
 
+class TestFunctionalGetNotifications(TestFunctional):
+
+    def testGetNotificationsBasic(self):
+        client = CalendarClient(self.calendarUrl)
+        notifications = client.getNotifications(0, 1)
+        self.assertEqual(notifications, [])
+        client.addBooking(10, datetime(2012, 1, 1), datetime(2012, 1, 4))
+        notifications = client.getNotifications(0, 1)
+        self.assertNotEqual(notifications, [])
+        self.assertEqual(len(notifications), 1)
+        notification = notifications[0]
+        self.assertEqual(notification._cgtId, 10)
+        self.assertEqual(notification._notificationId, 1)
+        self.assertEqual(notification._startDate, date(2012, 1, 1))
+        self.assertEqual(notification._endDate, date(2012, 1, 4))
+        self.assertEqual(notification._bookingType, 'booked')
+
+    def testGetNotificationsMultiple(self):
+        client = CalendarClient(self.calendarUrl)
+        client.addBooking(10, datetime(2012, 1, 1), datetime(2012, 1, 4))
+        client.addBooking(9, datetime(2012, 1, 1), datetime(2012, 1, 4))
+        client.addBooking(8, datetime(2012, 1, 1), datetime(2012, 1, 4))
+        notifications = client.getNotifications(0, 1)
+        self.assertNotEqual(notifications, [])
+        self.assertEqual(len(notifications), 1)
+        notifications = client.getNotifications(0, 2)
+        self.assertEqual(len(notifications), 2)
+        self.assertEqual(notifications[0]._cgtId, 10)
+        self.assertEqual(notifications[1]._cgtId, 9)
+        notifications = client.getNotifications(0, 3)
+        self.assertEqual(len(notifications), 3)
+        self.assertEqual(notifications[0]._cgtId, 10)
+        self.assertEqual(notifications[1]._cgtId, 9)
+        self.assertEqual(notifications[2]._cgtId, 8)
+        notifications = client.getNotifications(0)
+        self.assertEqual(len(notifications), 3)
+
+    def testGetNotificationsSameId(self):
+        client = CalendarClient(self.calendarUrl)
+        client.addBooking(10, datetime(2012, 1, 1), datetime(2012, 1, 4))
+        notifications = client.getNotifications(1, 1)
+        self.assertNotEqual(notifications, [])
+        self.assertEqual(len(notifications), 1)
+
+    def testGetNotificationsOutOfRange(self):
+        client = CalendarClient(self.calendarUrl)
+        client.addBooking(10, datetime(2012, 1, 1), datetime(2012, 1, 4))
+        notifications = client.getNotifications(2, 10)
+        self.assertEqual(notifications, [])
+
+    def testGetNotificationsNoBound(self):
+        client = CalendarClient(self.calendarUrl)
+        client.addBooking(10, datetime(2012, 1, 1), datetime(2012, 1, 4))
+        notifications = client.getNotifications(0)
+        self.assertNotEqual(notifications, [])
+        self.assertEqual(len(notifications), 1)
+
+    def testGetNotificationValidation(self):
+        client = CalendarClient(self.calendarUrl)
+        msg_re = 'minNotificationId must be lower or equal to maxNotificationId'
+        with self.assertRaisesRegexp(ZSI.FaultException, msg_re):
+            client.getNotifications(6, 2)
+        msg_re = 'minNotificationId and maxNotificationId must be higher or equal to 0'
+        with self.assertRaisesRegexp(ZSI.FaultException, msg_re):
+            client.getNotifications(-2, 2)
+        msg_re = 'minNotificationId and maxNotificationId must be lower or equal to the current maximum notification id'
+        with self.assertRaisesRegexp(ZSI.FaultException, msg_re):
+            client.getNotifications(1, 1)
+
+
 class TestFunctionalGetBookings(TestFunctional):
 
     def testGetBookings(self):

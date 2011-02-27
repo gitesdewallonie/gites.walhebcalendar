@@ -9,7 +9,7 @@ import datetime
 from ZSI.auth import AUTH
 from tempfile import mkstemp
 from gites.walhebcalendar.zsi.booking_client import (bookingLocator, addBookingRequest,
-                                                     getBookingsRequest)
+                                                     getBookingsRequest, getNotificationsRequest)
 
 
 class CalendarClient(object):
@@ -63,6 +63,13 @@ class CalendarClient(object):
         bookingRequest._cgtId = cgtIds
         response = self.port.getBookings(bookingRequest)
         return response._bookings
+
+    def getNotifications(self, minNotificationId, maxNotificationId=None):
+        notifRequest = getNotificationsRequest()
+        notifRequest._minNotificationId = minNotificationId
+        notifRequest._maxNotificationId = maxNotificationId
+        response = self.port.getNotifications(notifRequest)
+        return response._notifications
 
     def close(self):
         self.trace.close()

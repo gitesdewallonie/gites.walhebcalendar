@@ -100,7 +100,7 @@ class ns0:
         type = (schema, "notification")
         def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
             ns = ns0.notification_Def.schema
-            TClist = [ZSI.TCnumbers.Iint(pname="cgtId", aname="_cgtId", minOccurs=0, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCnumbers.Iint(pname="notificationId", aname="_notificationId", minOccurs=0, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCtimes.gDate(pname="startDate", aname="_startDate", minOccurs=0, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCtimes.gDate(pname="endDate", aname="_endDate", minOccurs=0, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded")), self.__class__.bookingType_Dec(minOccurs=0, maxOccurs="unbounded", nillable=False, encoded=kw.get("encoded"))]
+            TClist = [ZSI.TCnumbers.Iint(pname="cgtId", aname="_cgtId", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCnumbers.Iint(pname="notificationId", aname="_notificationId", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCtimes.gDate(pname="startDate", aname="_startDate", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCtimes.gDate(pname="endDate", aname="_endDate", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), self.__class__.bookingType_Dec(minOccurs=0, maxOccurs=1, nillable=False, encoded=kw.get("encoded"))]
             self.attribute_typecode_dict = attributes or {}
             if extend: TClist += ofwhat
             if restrict: TClist = ofwhat
@@ -110,11 +110,11 @@ class ns0:
                 typecode = self
                 def __init__(self):
                     # pyclass
-                    self._cgtId = []
-                    self._notificationId = []
-                    self._startDate = []
-                    self._endDate = []
-                    self._bookingType = []
+                    self._cgtId = None
+                    self._notificationId = None
+                    self._startDate = None
+                    self._endDate = None
+                    self._bookingType = None
                     return
             Holder.__name__ = "notification_Holder"
             self.pyclass = Holder

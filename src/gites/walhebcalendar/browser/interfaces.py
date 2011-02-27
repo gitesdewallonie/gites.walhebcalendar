@@ -29,3 +29,9 @@ class IGetBookingRequest(Interface):
     """
     Get booking Request interface
     """
+
+
+class IGetNotificationRequest(Interface):
+    """
+    Get notifications Request marker interface
+    """

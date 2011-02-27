@@ -14,6 +14,11 @@
      interface=".interfaces.IGetBookingRequest"
      />
 
+   <five:implements
+     class="..zsi.booking_server.getNotificationsRequest"
+     interface=".interfaces.IGetNotificationRequest"
+     />
+
    <grok:grok package="."/>
 
    <soap:view
@@ -25,6 +30,12 @@
    <soap:view
      for="..interfaces.ICalendarApplication"
      methods="getBookingsRequest"
+     class=".booking.SOAPBookingManagement"
+     permission="walhebcalendar.ViewBookings"/>
+
+   <soap:view
+     for="..interfaces.ICalendarApplication"
+     methods="getNotificationsRequest"
      class=".booking.SOAPBookingManagement"
      permission="walhebcalendar.ViewBookings"/>
 
@@ -46,6 +57,16 @@
    <utility
        factory="..zsi.booking_server.getBookingsResponse"
        name="http://affinitic.be/booking/getBookingsRequest"
+       provides="z3c.soap.interfaces.IZSIResponseType"/>
+
+   <utility
+       factory="..zsi.booking_server.getNotificationsRequest"
+       name="http://affinitic.be/booking/getNotificationsRequest"
+       provides="z3c.soap.interfaces.IZSIRequestType"/>
+
+   <utility
+       factory="..zsi.booking_server.getNotificationsResponse"
+       name="http://affinitic.be/booking/getNotificationsRequest"
        provides="z3c.soap.interfaces.IZSIResponseType"/>
 
 </configure>

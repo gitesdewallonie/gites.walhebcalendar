@@ -54,6 +54,27 @@ class SOAPBookingManagement(object):
         response._bookings = bookings
         return response
 
+    @validate
+    def getNotificationsRequest(self, requestData, response):
+        notfs = []
+        minNotificationId = requestData._minNotificationId
+        maxNotificationId = requestData._maxNotificationId
+        query = self.session.query(Notification)
+        query = query.filter(Notification.notf_id >= minNotificationId)
+        if maxNotificationId:
+            query = query.filter(Notification.notf_id <= maxNotificationId)
+        query = query.order_by(Notification.notf_id)
+        for notif in query.all():
+            wsNotf = response.new_notifications()
+            wsNotf._cgtId = notif.notf_cgt_id
+            wsNotf._notificationId = notif.notf_id
+            wsNotf._startDate = notif.notf_start_date
+            wsNotf._endDate = notif.notf_end_date
+            wsNotf._bookingType = notif.notf_booking_type
+            notfs.append(wsNotf)
+        response._notifications = notfs
+        return response
+
     @property
     @memoize
     def session(self):

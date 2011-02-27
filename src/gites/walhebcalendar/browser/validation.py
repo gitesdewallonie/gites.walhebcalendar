@@ -6,10 +6,15 @@ Licensed under the GPL license, see LICENCE.txt for more details.
 Copyright by Affinitic sprl
 """
 from datetime import date
+from sqlalchemy import func
 import ZSI
 import grokcore.component as grok
+from zope.component import getUtility
+from affinitic.db.interfaces import IDatabase
+from walhebcalendar.db.notification import Notification
 from gites.walhebcalendar.browser.interfaces import (ISOAPRequestValidator, IAddBookingRequest,
-                                                     IGetBookingRequest)
+                                                     IGetBookingRequest,
+                                                     IGetNotificationRequest)
 
 
 class BaseValidation(grok.Subscription):
@@ -23,6 +28,39 @@ class BaseValidation(grok.Subscription):
     def testDateOrder(self):
         if self.startDate > self.endDate:
             raise ZSI.Fault(ZSI.Fault.Client, u"Start date is after end date")
+
+
+class GetNotificationsRequestValidation(BaseValidation):
+    grok.provides(ISOAPRequestValidator)
+    grok.context(IGetNotificationRequest)
+
+    def __init__(self, notfRequest):
+        self.notificationsRequest = notfRequest
+        self.minNotfId = self.notificationsRequest._minNotificationId
+        self.maxNotfId = self.notificationsRequest._maxNotificationId
+
+    def validate(self):
+        self.testNotfIdOrder()
+        self.testSuperiorToZero()
+        self.testLowerToMaxId()
+
+    def testLowerToMaxId(self):
+        db = getUtility(IDatabase, name='pg')
+        query = db.session.query(func.max(Notification.notf_id))
+        maxNotfId = query.one()
+        if self.minNotfId > maxNotfId or self.maxNotfId < maxNotfId:
+            raise ZSI.Fault(ZSI.Fault.Client,
+                            u"minNotificationId and maxNotificationId must be lower or equal to the current maximum notification id")
+
+    def testSuperiorToZero(self):
+        if self.minNotfId < 0 or self.maxNotfId < 0:
+            raise ZSI.Fault(ZSI.Fault.Client,
+                            u"minNotificationId and maxNotificationId must be higher or equal to 0")
+
+    def testNotfIdOrder(self):
+        if self.minNotfId > self.maxNotfId:
+            raise ZSI.Fault(ZSI.Fault.Client,
+                            u"minNotificationId must be lower or equal to maxNotificationId")
 
 
 class GetBookingRequestValidation(BaseValidation):

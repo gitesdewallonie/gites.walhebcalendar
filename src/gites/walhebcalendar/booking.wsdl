@@ -75,13 +75,13 @@
 			</xsd:element>
 
 			    <xsd:complexType name="notification">
-					<xsd:sequence maxOccurs="unbounded" minOccurs="0">
-						<xsd:element name="cgtId" type="xsd:int" minOccurs="1"> </xsd:element>
+					<xsd:sequence minOccurs="0">
+						<xsd:element name="cgtId" type="xsd:int" minOccurs="1" maxOccurs="1"> </xsd:element>
 						<xsd:element name="notificationId" type="xsd:int" minOccurs="1"
 							maxOccurs="1"/>
-						<xsd:element name="startDate" type="xsd:date" minOccurs="1"> </xsd:element>
-						<xsd:element name="endDate" type="xsd:date" minOccurs="1"> </xsd:element>
-						<xsd:element name="bookingType" minOccurs="1">
+						<xsd:element name="startDate" type="xsd:date" minOccurs="1" maxOccurs="1"> </xsd:element>
+						<xsd:element name="endDate" type="xsd:date" minOccurs="1" maxOccurs="1"> </xsd:element>
+						<xsd:element name="bookingType" minOccurs="1" maxOccurs="1">
 							<xsd:simpleType>
 								<xsd:restriction base="xsd:string">
 									<xsd:enumeration value="booked"/>
