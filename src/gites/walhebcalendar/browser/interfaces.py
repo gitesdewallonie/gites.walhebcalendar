@@ -35,3 +35,9 @@ class IGetNotificationRequest(Interface):
     """
     Get notifications Request marker interface
     """
+
+
+class ICancelBookingRequest(Interface):
+    """
+    Cancel booking Request marker interface
+    """

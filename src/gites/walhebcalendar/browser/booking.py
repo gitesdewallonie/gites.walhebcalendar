@@ -26,9 +26,9 @@ class SOAPBookingManagement(object):
         if requestData._bookingType in ['booked', 'unavailable']:
             bookings = self._addBookings(requestData, notf)
             notf.createdBookings = list(bookings)
-            session.add(notf)
         elif requestData._bookingType in ['available']:
             self._removeBookings(requestData)
+        session.add(notf)
         session.flush()
         response._notificationId = notf.notf_id
         return response
@@ -46,11 +46,12 @@ class SOAPBookingManagement(object):
                 wsBooking._endDate = booking.book_date
                 wsBooking._cgtId = booking.book_cgt_id
                 wsBooking._bookingType = booking.book_booking_type
-                lastKey = (booking.book_date + timedelta(days=1), booking.book_booking_type,
-                           booking.book_cgt_id)
                 bookings.append(wsBooking)
             else:
                 wsBooking._endDate = booking.book_date
+            lastKey = (booking.book_date + timedelta(days=1), booking.book_booking_type,
+                       booking.book_cgt_id)
+
         response._bookings = bookings
         return response
 
@@ -74,6 +75,11 @@ class SOAPBookingManagement(object):
             notfs.append(wsNotf)
         response._notifications = notfs
         return response
+
+    @validate
+    def cancelBookingRequest(self, requestData, response):
+        requestData._bookingType = 'available'
+        return self.addBookingRequest(requestData, response)
 
     @property
     @memoize
@@ -107,7 +113,10 @@ class SOAPBookingManagement(object):
                 yield book
 
     def _removeBookings(self, booking):
-        pass
+        for booking in self._getBookings(booking._cgtId,
+                                         booking._startDate,
+                                         booking._endDate):
+            self.session.delete(booking)
 
     def _getBookingsGroupedByDays(self, cgtId, startDate, endDate):
         bookings = {}

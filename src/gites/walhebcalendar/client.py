@@ -9,7 +9,8 @@ import datetime
 from ZSI.auth import AUTH
 from tempfile import mkstemp
 from gites.walhebcalendar.zsi.booking_client import (bookingLocator, addBookingRequest,
-                                                     getBookingsRequest, getNotificationsRequest)
+                                                     getBookingsRequest, getNotificationsRequest,
+                                                     cancelBookingRequest)
 
 
 class CalendarClient(object):
@@ -70,6 +71,14 @@ class CalendarClient(object):
         notifRequest._maxNotificationId = maxNotificationId
         response = self.port.getNotifications(notifRequest)
         return response._notifications
+
+    def cancelBooking(self, cgtId, startDate, endDate):
+        cancelRequest = cancelBookingRequest()
+        cancelRequest._cgtId = cgtId
+        cancelRequest._startDate = startDate
+        cancelRequest._endDate = endDate
+        response = self.port.cancelBooking(cancelRequest)
+        return response._notificationId
 
     def close(self):
         self.trace.close()
