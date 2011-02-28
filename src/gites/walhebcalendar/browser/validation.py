@@ -14,7 +14,8 @@ from affinitic.db.interfaces import IDatabase
 from walhebcalendar.db.notification import Notification
 from gites.walhebcalendar.browser.interfaces import (ISOAPRequestValidator, IAddBookingRequest,
                                                      IGetBookingRequest,
-                                                     IGetNotificationRequest)
+                                                     IGetNotificationRequest,
+                                                     ICancelBookingRequest)
 
 
 class BaseValidation(grok.Subscription):
@@ -31,7 +32,6 @@ class BaseValidation(grok.Subscription):
 
 
 class GetNotificationsRequestValidation(BaseValidation):
-    grok.provides(ISOAPRequestValidator)
     grok.context(IGetNotificationRequest)
 
     def __init__(self, notfRequest):
@@ -68,7 +68,6 @@ class GetNotificationsRequestValidation(BaseValidation):
 
 
 class GetBookingRequestValidation(BaseValidation):
-    grok.provides(ISOAPRequestValidator)
     grok.context(IGetBookingRequest)
 
     def __init__(self, bookingRequest):
@@ -93,7 +92,6 @@ class GetBookingRequestValidation(BaseValidation):
 
 
 class AddBookingRequestValidation(BaseValidation):
-    grok.provides(ISOAPRequestValidator)
     grok.context(IAddBookingRequest)
 
     def __init__(self, bookingRequest):
@@ -113,4 +111,22 @@ class AddBookingRequestValidation(BaseValidation):
         self.testPastDates()
         self.testDateOrder()
         self.testBookingType()
+        self.testCGTId()
+
+
+class CancelBookingRequestValidation(BaseValidation):
+    grok.context(ICancelBookingRequest)
+
+    def __init__(self, cancelRequest):
+        self.cancelRequest = cancelRequest
+        self.startDate = self.cancelRequest._startDate
+        self.endDate = self.cancelRequest._endDate
+
+    def testCGTId(self):
+        if self.cancelRequest._cgtId < 0:
+            raise ZSI.Fault(ZSI.Fault.Client, u"Wrong CGT Id. Must be greater than 0")
+
+    def validate(self):
+        self.testPastDates()
+        self.testDateOrder()
         self.testCGTId()
