@@ -31,9 +31,9 @@
           {%- if display_toc %}
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="{{ pathto(master_doc) }}">
-              <img class="logo" src="http://www.bnbelgium.be/logoGDW_web2.png" alt="Logo"/>
-            </a></p>
+            <div class="logo"><a href="{{ pathto(master_doc) }}">
+              <img class="logo" src="http://dev.walhebcalendar.be/logo.png" alt="Logo"/>
+            </a></div>
 
             <h3><a href="{{ pathto(master_doc) }}">{{ _('Table Of Contents') }}</a></h3>
             {{ toc }}
@@ -75,7 +75,6 @@
           {%- endblock %}
         </div>
       </div>
-      {%- endif %}{% endif %}
 {%- endmacro %}
 
 <html xmlns="http://www.w3.org/1999/xhtml">
