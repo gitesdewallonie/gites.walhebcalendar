@@ -1,0 +1,5 @@
+<?xml version="1.0" ?>
+<zodb-users title="User Management">
+ <user user_id="gotcha" login_name="gotcha"
+       password_hash="{SSHA}U3VMy/Lis8pl4sUcinxrlvBUhy0Mzp3yPRoN"/>
+</zodb-users>

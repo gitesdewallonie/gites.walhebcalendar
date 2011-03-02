@@ -1,0 +1,29 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="plone">
+
+  <genericsetup:registerProfile
+      name="calendar"
+      title="calendar Application"
+      directory="profiles/default"
+      description="Profile for a default calendar."
+      for="gites.walhebcalendar.interfaces.ICalendarApplication"
+      />
+
+  <genericsetup:importStep
+      name="pas"
+      title="PAS"
+      description="Import the PAS registry and plugins."
+      handler="gites.walhebcalendar.calendar.importPAS">
+      <depends name="toolset" />
+  </genericsetup:importStep>
+
+  <genericsetup:exportStep
+      name="pas"
+      title="PAS"
+      description="Export the PAS registry and plugins."
+      handler="gites.walhebcalendar.calendar.exportPAS"
+      />
+
+</configure>

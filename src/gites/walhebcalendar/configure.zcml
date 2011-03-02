@@ -5,7 +5,10 @@
     <include package="zope.browserpage" file="meta.zcml"/>
     <include package="z3c.autoinclude" file="meta.zcml" />
     <includeDependencies package="." />
-
+    <include file="profiles.zcml"/>
+    <include package="Products.PluginRegistry"/>
+    <include package="Products.GenericSetup"/>
+    <include package="Products.PluggableAuthService"/>
     <permission
         id="walhebcalendar.AddBooking"
         title="WalhebCalendar: Add Booking"/>

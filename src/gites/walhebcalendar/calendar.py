@@ -6,13 +6,24 @@ Licensed under the GPL license, see LICENCE.txt for more details.
 Copyright by Affinitic sprl
 """
 import transaction
+from zope.component import getSiteManager
+from zope.component import getGlobalSiteManager
+from zope.container.interfaces import IObjectAddedEvent
 from zope.interface import implements
 from zope.processlifetime import IDatabaseOpenedWithRoot
-import grokcore.component as grok
 from OFS.Folder import Folder
+import grokcore.component as grok
+from Products.GenericSetup.interfaces import IFilesystemImporter
+from Products.GenericSetup.interfaces import IFilesystemExporter
+from five.localsitemanager import make_objectmanager_site
+from Products.GenericSetup.tool import SetupTool
 from gites.walhebcalendar.log import logger
 from gites.walhebcalendar.interfaces import ICalendarApplication
 CAL_ID = 'calendar'
+PAS_ID = 'acl_users'
+SETUP_ID = 'app_setup'
+
+PROFILE_ID = 'profile-gites.walhebcalendar:calendar'
 
 
 class Calendar(Folder):
@@ -51,3 +62,38 @@ def setupCalendar(event):
             raise
     finally:
         conn.close()
+
+
+@grok.subscribe(ICalendarApplication, IObjectAddedEvent)
+def setupWiwoAfterCreation(wiwoApp, event):
+    """
+    make wiwo a local site
+    add generic setup tool in Wiwo Application
+    start task queue services
+    """
+    sm = getSiteManager(wiwoApp)
+    if sm is getGlobalSiteManager():
+        logger.info('make local site')
+        make_objectmanager_site(wiwoApp)
+
+    if hasattr(wiwoApp, SETUP_ID):
+        return
+    logger.info('generic setup')
+    wiwoApp._setObject(SETUP_ID, SetupTool(SETUP_ID))
+    setup_tool = getattr(wiwoApp, SETUP_ID)
+
+    setup_tool.setBaselineContext(PROFILE_ID)
+    setup_tool.runAllImportStepsFromProfile(PROFILE_ID)
+
+
+def exportPAS(context):
+    app = context.getSite()
+    pas = app[PAS_ID]
+    IFilesystemExporter(pas).export(context, 'PAS', True)
+
+
+def importPAS(context):
+    app = context.getSite()
+    pas = app[PAS_ID]
+    IFilesystemImporter(pas).import_(context, 'PAS', True)
+    logger.info('PAS imported')

@@ -43,4 +43,7 @@ setup(name='gites.walhebcalendar',
           'plone.memoize',
           'setuptools',
           'z3c.autoinclude',
+          'Products.GenericSetup',
+          'Products.PluginRegistry',
+          'Products.PluggableAuthService',
           'walhebcalendar.db'])
