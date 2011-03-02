@@ -76,14 +76,3 @@ def text_to_data(self, text, elt, ps):
 
 from ZSI.TCtimes import gDate
 gDate.text_to_data = text_to_data
-
-def newMapply(object, positional=(), keyword={},
-           debug=None, maybe=None,
-           missing_name=None,
-           handle_class=None,
-           context=None, bind=0,
-           ):
-    return object(*positional)
-
-import ZPublisher.mapply
-ZPublisher.mapply.mapply = newMapply
