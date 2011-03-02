@@ -3,26 +3,21 @@
            xmlns:soap="http://namespaces.zope.org/soap"
            xmlns:grok="http://namespaces.zope.org/grok"
            i18n_domain="gites">
+   <class class="..zsi.booking_server.addBookingRequest">
+       <implements interface=".interfaces.IAddBookingRequest" />
+   </class>
 
-   <five:implements
-     class="..zsi.booking_server.addBookingRequest"
-     interface=".interfaces.IAddBookingRequest"
-     />
+   <class class="..zsi.booking_server.getBookingsRequest">
+       <implements interface=".interfaces.IGetBookingRequest" />
+   </class>
 
-   <five:implements
-     class="..zsi.booking_server.getBookingsRequest"
-     interface=".interfaces.IGetBookingRequest"
-     />
+   <class class="..zsi.booking_server.getNotificationsRequest">
+       <implements interface=".interfaces.IGetNotificationRequest" />
+   </class>
 
-   <five:implements
-     class="..zsi.booking_server.getNotificationsRequest"
-     interface=".interfaces.IGetNotificationRequest"
-     />
-
-   <five:implements
-     class="..zsi.booking_server.cancelBookingRequest"
-     interface=".interfaces.ICancelBookingRequest"
-     />
+   <class class="..zsi.booking_server.cancelBookingRequest">
+       <implements interface=".interfaces.ICancelBookingRequest" />
+   </class>
 
    <grok:grok package="."/>
 
