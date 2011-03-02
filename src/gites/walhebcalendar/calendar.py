@@ -7,7 +7,7 @@ Copyright by Affinitic sprl
 """
 import transaction
 from zope.interface import implements
-from zope.app.appsetup.interfaces import IDatabaseOpenedWithRootEvent
+from zope.processlifetime import IDatabaseOpenedWithRoot
 import grokcore.component as grok
 from OFS.Folder import Folder
 from gites.walhebcalendar.log import logger
@@ -36,7 +36,7 @@ def calendar_setup(app):
     calendar.manage_permission('WalhebCalendar: View Bookings', ['Authenticated'])
 
 
-@grok.subscribe(IDatabaseOpenedWithRootEvent)
+@grok.subscribe(IDatabaseOpenedWithRoot)
 def setupCalendar(event):
     db = event.database
     conn = db.open()
