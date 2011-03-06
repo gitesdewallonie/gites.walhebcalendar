@@ -1,0 +1,43 @@
+=======================
+Ajout d'une reservation
+=======================
+
+.. function:: addBooking(cgtId, startDate, endDate, bookingType)
+
+    Ajout d'une réservation pour l'hébergement **cgtId** entre deux dates.
+
+    :param cgtId: code CGT de l'hébergement
+    :param startDate: date du début de la réservation
+    :param endDate: date de fin de la réservation
+    :rtype: notificationId: le numéro de notification
+
+Requete
+=======
+
+L'utilisateur peut enregistrer une réservation entre deux date pour un hébergement.
+
+Format
+------
+
+Un requête SOAP contient:
+
+   +-------------------+--------------------------+--------------+---------------------------+---------------------------+
+   | **attribut**      | **description**          | multiplicité | format                    | example                   |
+   +===================+==========================+==============+===========================+===========================+
+   |  ``cgtId``        | code CGT de l'hebergement|              |                           |                           |
+   |                   |                          |    1..1      | Integer                   |  222                      |
+   +-------------------+--------------------------+--------------+---------------------------+---------------------------+
+   |  ``startDate``    | premier jour de la       |              |                           |                           |
+   |                   | réservation              |    1..1      | Date                      |  2009-01-01               |
+   +-------------------+--------------------------+--------------+---------------------------+---------------------------+
+   |  ``endDate``      | dernier jour de la       |              |                           |                           |
+   |                   | réservation              |    1..1      | Date                      |  2009-01-01               |
+   +-------------------+--------------------------+--------------+---------------------------+---------------------------+
+   |  ``bookingType``  | type de réservation      |    0..1      | String: ``booked`` ou     |  booked                   |
+   |                   |                          |              | ``unavailable``           |                           |
+   +-------------------+--------------------------+--------------+---------------------------+---------------------------+
+
+Pre conditions
+--------------
+
+

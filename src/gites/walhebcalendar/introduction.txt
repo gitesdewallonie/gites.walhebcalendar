@@ -1,0 +1,22 @@
+============
+Introduction
+============
+
+Afin de permettre l'échange de réservations d'hébergement (gites et chambres d'hôte) entre les différents acteurs du
+secteur, nous avons mis en place une application centralisée orientée services: ``WalHebCalendar``
+
+Afin de fédérer l'ensemble des systèmes de réservation des différents acteurs
+l'application met en place différents services invoqués via des web services
+implémentés en SOAP.
+
+Une réservation correspondant à une nuitée dans un hébergement.
+Les informations de réservation une fois ajoutées dans le système peuvent être
+transmises à l'ensemble des acteurs par différentes interfaces :
+
+1. Une première interface 'pull' est un service disponible sur le système invoqué à la demande par les acteurs (cf description ci-dessous)
+
+2. Une deuxième interface 'push' permet au système d'envoyer l'information aux acteurs dès qu'une réservation a été ajoutée mais
+
+3. Une troisième interface 'push' est disponible sur le système via le protocole de messaging AMQP.
+
+La sécurité des transferts de l'ensemble des échanges est assurée par un lien SSL.
