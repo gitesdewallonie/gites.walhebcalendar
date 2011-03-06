@@ -202,7 +202,7 @@
 	</wsdl:binding>
 	<wsdl:service name="booking">
 		<wsdl:port binding="tns:bookingSOAP" name="bookingSOAP">
-			<soap:address location="http://affinitic.be/bookings"/>
+			<soap:address location="http://dev.walhebcalendar.be"/>
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>
