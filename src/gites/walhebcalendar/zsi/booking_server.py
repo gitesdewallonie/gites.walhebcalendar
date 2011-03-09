@@ -34,7 +34,7 @@ class booking(ServiceSOAPBinding):
     soapAction = {}
     root = {}
 
-    def __init__(self, post='/bookings', **kw):
+    def __init__(self, post='', **kw):
         ServiceSOAPBinding.__init__(self, post)
 
     def soap_addBooking(self, ps, **kw):

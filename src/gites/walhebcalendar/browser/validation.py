@@ -6,6 +6,7 @@ Licensed under the GPL license, see LICENCE.txt for more details.
 Copyright by Affinitic sprl
 """
 from datetime import date
+import re
 from sqlalchemy import func
 import ZSI
 import grokcore.component as grok
@@ -86,9 +87,11 @@ class GetBookingRequestValidation(BaseValidation):
             raise ZSI.Fault(ZSI.Fault.Client, u"Too many CGT ids. Maximum is 1000. If you provide no CGT id, the system will return the bookings for all CGT ids")
 
     def testCGTId(self):
+        CGTID_FORMAT = '[A-Z]{4}[0-9]{4}'
         for cgtId in self.bookingRequest._cgtId:
-            if cgtId < 0:
-                raise ZSI.Fault(ZSI.Fault.Client, u"Wrong CGT Id. Must be greater than 0")
+            cgtId = str(cgtId)
+            if not re.match(CGTID_FORMAT, cgtId):
+                raise ZSI.Fault(ZSI.Fault.Client, u"Wrong CGT Id format. Must match [A-Z]{4}[0-9]{4}")
 
 
 class AddBookingRequestValidation(BaseValidation):
@@ -104,8 +107,10 @@ class AddBookingRequestValidation(BaseValidation):
             raise ZSI.Fault(ZSI.Fault.Client, u"Wrong booking type. Must be booked or available or unavailable")
 
     def testCGTId(self):
-        if self.bookingRequest._cgtId < 0:
-            raise ZSI.Fault(ZSI.Fault.Client, u"Wrong CGT Id. Must be greater than 0")
+        CGTID_FORMAT = '[A-Z]{4}[0-9]{4}'
+        cgtId = str(self.bookingRequest._cgtId)
+        if not re.match(CGTID_FORMAT, cgtId):
+            raise ZSI.Fault(ZSI.Fault.Client, u"Wrong CGT Id format. Must match [A-Z]{4}[0-9]{4}")
 
     def validate(self):
         self.testPastDates()
@@ -123,8 +128,10 @@ class CancelBookingRequestValidation(BaseValidation):
         self.endDate = self.cancelRequest._endDate
 
     def testCGTId(self):
-        if self.cancelRequest._cgtId < 0:
-            raise ZSI.Fault(ZSI.Fault.Client, u"Wrong CGT Id. Must be greater than 0")
+        CGTID_FORMAT = '[A-Z]{4}[0-9]{4}'
+        cgtId = str(self.cancelRequest._cgtId)
+        if not re.match(CGTID_FORMAT, cgtId):
+            raise ZSI.Fault(ZSI.Fault.Client, u"Wrong CGT Id format. Must match [A-Z]{4}[0-9]{4}")
 
     def validate(self):
         self.testPastDates()

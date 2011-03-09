@@ -24,7 +24,7 @@ class ns0:
         type = (schema, "addBookingRequestType")
         def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
             ns = ns0.addBookingRequestType_Def.schema
-            TClist = [ZSI.TCnumbers.Iint(pname="cgtId", aname="_cgtId", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCtimes.gDate(pname="startDate", aname="_startDate", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCtimes.gDate(pname="endDate", aname="_endDate", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), self.__class__.bookingType_Dec(minOccurs=0, maxOccurs=1, nillable=False, encoded=kw.get("encoded"))]
+            TClist = [ZSI.TC.AnyType(pname="cgtId", aname="_cgtId", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCtimes.gDate(pname="startDate", aname="_startDate", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCtimes.gDate(pname="endDate", aname="_endDate", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), self.__class__.bookingType_Dec(minOccurs=0, maxOccurs=1, nillable=False, encoded=kw.get("encoded"))]
             self.attribute_typecode_dict = attributes or {}
             if extend: TClist += ofwhat
             if restrict: TClist = ofwhat
@@ -62,7 +62,7 @@ class ns0:
         type = (schema, "booking")
         def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
             ns = ns0.booking_Def.schema
-            TClist = [ZSI.TCnumbers.Iint(pname="cgtId", aname="_cgtId", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCtimes.gDate(pname="startDate", aname="_startDate", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCtimes.gDate(pname="endDate", aname="_endDate", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), self.__class__.bookingType_Dec(minOccurs=0, maxOccurs=1, nillable=False, encoded=kw.get("encoded"))]
+            TClist = [ZSI.TC.AnyType(pname="cgtId", aname="_cgtId", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCtimes.gDate(pname="startDate", aname="_startDate", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCtimes.gDate(pname="endDate", aname="_endDate", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), self.__class__.bookingType_Dec(minOccurs=0, maxOccurs=1, nillable=False, encoded=kw.get("encoded"))]
             self.attribute_typecode_dict = attributes or {}
             if extend: TClist += ofwhat
             if restrict: TClist = ofwhat
@@ -100,7 +100,7 @@ class ns0:
         type = (schema, "notification")
         def __init__(self, pname, ofwhat=(), attributes=None, extend=False, restrict=False, **kw):
             ns = ns0.notification_Def.schema
-            TClist = [ZSI.TCnumbers.Iint(pname="cgtId", aname="_cgtId", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCnumbers.Iint(pname="notificationId", aname="_notificationId", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCtimes.gDate(pname="startDate", aname="_startDate", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCtimes.gDate(pname="endDate", aname="_endDate", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), self.__class__.bookingType_Dec(minOccurs=0, maxOccurs=1, nillable=False, encoded=kw.get("encoded"))]
+            TClist = [ZSI.TC.AnyType(pname="cgtId", aname="_cgtId", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCnumbers.Iint(pname="notificationId", aname="_notificationId", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCtimes.gDate(pname="startDate", aname="_startDate", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCtimes.gDate(pname="endDate", aname="_endDate", minOccurs=0, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), self.__class__.bookingType_Dec(minOccurs=0, maxOccurs=1, nillable=False, encoded=kw.get("encoded"))]
             self.attribute_typecode_dict = attributes or {}
             if extend: TClist += ofwhat
             if restrict: TClist = ofwhat
@@ -174,7 +174,7 @@ class ns0:
         schema = "http://affinitic.be/booking"
         def __init__(self, **kw):
             ns = ns0.getBookingsRequest_Dec.schema
-            TClist = [ZSI.TCtimes.gDate(pname="minDate", aname="_minDate", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCtimes.gDate(pname="maxDate", aname="_maxDate", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCnumbers.Iint(pname="cgtId", aname="_cgtId", minOccurs=0, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded"))]
+            TClist = [ZSI.TCtimes.gDate(pname="minDate", aname="_minDate", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCtimes.gDate(pname="maxDate", aname="_maxDate", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TC.AnyType(pname="cgtId", aname="_cgtId", minOccurs=0, maxOccurs="unbounded", nillable=False, typed=False, encoded=kw.get("encoded"))]
             kw["pname"] = (u'http://affinitic.be/booking', u'getBookingsRequest')
             kw["aname"] = "_getBookingsRequest"
             self.attribute_typecode_dict = {}
@@ -257,7 +257,7 @@ class ns0:
         schema = "http://affinitic.be/booking"
         def __init__(self, **kw):
             ns = ns0.cancelBookingRequest_Dec.schema
-            TClist = [ZSI.TCnumbers.Iint(pname="cgtId", aname="_cgtId", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCtimes.gDate(pname="startDate", aname="_startDate", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCtimes.gDate(pname="endDate", aname="_endDate", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
+            TClist = [ZSI.TC.AnyType(pname="cgtId", aname="_cgtId", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCtimes.gDate(pname="startDate", aname="_startDate", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded")), ZSI.TCtimes.gDate(pname="endDate", aname="_endDate", minOccurs=1, maxOccurs=1, nillable=False, typed=False, encoded=kw.get("encoded"))]
             kw["pname"] = (u'http://affinitic.be/booking', u'cancelBookingRequest')
             kw["aname"] = "_cancelBookingRequest"
             self.attribute_typecode_dict = {}
