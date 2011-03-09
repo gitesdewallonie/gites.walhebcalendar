@@ -16,7 +16,7 @@ from ZSI.generate.pyclass import pyclass_type
 
 # Locator
 class bookingLocator:
-    bookingSOAP_address = "http://affinitic.be/bookings"
+    bookingSOAP_address = "http://dev.walhebcalendar.be"
     def getbookingSOAPAddress(self):
         return bookingLocator.bookingSOAP_address
     def getbookingSOAP(self, url=None, **kw):

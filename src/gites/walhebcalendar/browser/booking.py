@@ -129,7 +129,7 @@ class SOAPBookingManagement(object):
         query = self.session.query(Booking)
         if isinstance(cgtId, (list, set)) and len(cgtId) > 0:
             query = query.filter(Booking.book_cgt_id.in_(cgtId))
-        elif isinstance(cgtId, (int, float)):
+        elif isinstance(cgtId, (str, unicode)):
             query = query.filter(Booking.book_cgt_id == cgtId)
         query = query.filter(Booking.book_date.between(startDate, endDate))
         query = query.order_by(Booking.book_cgt_id, Booking.book_date)
