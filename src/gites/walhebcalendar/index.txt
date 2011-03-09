@@ -8,11 +8,11 @@ Contents:
 
    introduction
    addbooking
+   diag
    wsdl
    api
    diag
    changelog
-   diag
 
 Indices and tables
 ==================

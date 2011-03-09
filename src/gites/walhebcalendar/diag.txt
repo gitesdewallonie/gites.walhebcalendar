@@ -2,6 +2,7 @@ Sequence diagrams
 =================
 
 
+
 .. sequence-diagram::
 
    actor:Actor
