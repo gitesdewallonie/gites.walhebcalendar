@@ -12,4 +12,69 @@ Récupération de notifications
 Requete
 =======
 
+L'utilisateur peut demander l'ensemble des notifications de réservations ayant été enregistrés dans le système depuis un numéro de notification.
 
+Format
+------
+
+Un requête SOAP contient:
+
+   +---------------------+--------------------------+--------------+---------------------------+---------------------------+
+   | **attribut**        | **description**          | multiplicité | format                    | example                   |
+   +=====================+==========================+==============+===========================+===========================+
+   |``minNotificationId``| borne inférieur du       |              |                           |                           |
+   |                     | numéro de notification   |    1..1      | Entier                    |  4331                     |
+   +---------------------+--------------------------+--------------+---------------------------+---------------------------+
+   |``maxNotificationId``| borne supérieur du       |              |                           |                           |
+   |                     | numéro de notification   |    0..1      | Entier                    |  4331                     |
+   +---------------------+--------------------------+--------------+---------------------------+---------------------------+
+
+Pre conditions
+--------------
+
+- ``minNotificationId`` et ``maxNotificationId`` sont supérieur à 0
+- ``maxNotificationId`` est supérieur ou égale à ``minNotificationId``
+- ``minNotificationId`` et ``maxNotificationId`` sont inférieures ou égales au numéro de notification actuel
+
+Réponse
+=======
+
+La réponse contient une liste de notification (``notifications``).
+
+Format
+------
+
+Une notification contient les champs suivant:
+
+   +-------------------+--------------------------+--------------+---------------------------+---------------------------+
+   | **attribut**      | **description**          | multiplicité | format                    | example                   |
+   +===================+==========================+==============+===========================+===========================+
+   |  ``cgtId``        | code CGT de l'hebergement|              | String                    |                           |
+   |                   |                          |    1..1      | Format:  [A-Z]{4}[0-9]{4} |  GFLX1234                 |
+   +-------------------+--------------------------+--------------+---------------------------+---------------------------+
+   |``notificationId`` | numéro de notification   |              | Integer                   |                           |
+   |                   |                          |    1..1      |                           |  44232                    |
+   +-------------------+--------------------------+--------------+---------------------------+---------------------------+
+   |  ``startDate``    | premier jour de la       |              |                           |                           |
+   |                   | réservation              |    1..1      | Date                      |  2009-01-01               |
+   +-------------------+--------------------------+--------------+---------------------------+---------------------------+
+   |  ``endDate``      | dernier jour de la       |              |                           |                           |
+   |                   | réservation              |    1..1      | Date                      |  2009-01-01               |
+   +-------------------+--------------------------+--------------+---------------------------+---------------------------+
+   |  ``bookingType``  | type de réservation      |    1..1      | String: ``booked``,       |  booked                   |
+   |                   |                          |              | ``unavailable`` ou        |                           |
+   |                   |                          |              | ``available``             |                           |
+   +-------------------+--------------------------+--------------+---------------------------+---------------------------+
+
+Post conditions
+---------------
+
+- ``notifications``  correspond à la liste des notifications dont les numéros sont supérieures ou égales à ``minNotificationId``. Si ``maxNotificationId``
+est fourni, les numéros de notifications de la liste des notifications renvoyée sont inférieures ou égales à ``maxNotificationId``.
+- La date ``startDate`` est inférieure ou égale à ``endDate``
+- Les notifications sont triées par date de créations
+
+Exemples
+========
+
+.. includedoc:: gites.walhebcalendar.browser.tests:/getnotifications.txt

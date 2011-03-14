@@ -78,7 +78,7 @@ Post conditions
 - La date startDate est inférieure ou égale à endDate ;
 - Les réservations sont triées par date.
 
-Examples
+Exemples
 ========
 
 .. includedoc:: gites.walhebcalendar.browser.tests:/getbookings.txt

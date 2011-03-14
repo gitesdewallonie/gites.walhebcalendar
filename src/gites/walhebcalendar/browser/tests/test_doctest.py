@@ -25,6 +25,8 @@ def test_suite():
     doctestSuite = doctest.DocFileSuite(
             'addbooking.txt',
             'getbookings.txt',
+            'delbookings.txt',
+            'getnotifications.txt',
             setUp=setUp,
             optionflags=doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE,
         )

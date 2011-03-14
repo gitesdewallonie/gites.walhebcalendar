@@ -61,3 +61,8 @@ Post conditions
 
 - L'ensemble des réservations d'un hébergement entre startDate et endDate sont effacées et ce y compris les réservations dont les dates correspondent à un sous ensemble des dates données.
 
+Exemples
+========
+
+.. includedoc:: gites.walhebcalendar.browser.tests:/delbookings.txt
+

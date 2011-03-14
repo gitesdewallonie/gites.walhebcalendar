@@ -73,7 +73,7 @@ Post conditions
 - Si la réservation est de type indisponible ou réservé, la réservation est enregistrée une seule fois dans le système.
 - Si la réservation est de type disponible, l'ensemble des réservations correspondants aux critères sont effacées.
 
-Examples
+Exemples
 ========
 
 .. includedoc:: gites.walhebcalendar.browser.tests:/addbooking.txt
