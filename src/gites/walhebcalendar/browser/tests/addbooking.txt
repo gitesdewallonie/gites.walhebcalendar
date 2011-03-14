@@ -1,0 +1,227 @@
+Test setup:
+
+    >>> from plone.testing import z2
+    >>> with z2.zopeApp() as app:
+    ...     pass
+
+L'url de l'application instanciée pour ce test est contenu dans ``calendarUrl``
+
+    >>> calendarUrl
+    'http://localhost:55001/calendar'
+
+Grace à cet url, nous pouvons envoyer des requêtes SOAP vers l'application.
+Nous instancions alors un client::
+
+    >>> from gites.walhebcalendar.client import CalendarClient
+    >>> client = CalendarClient(calendarUrl)
+
+Simple ajout de réservation
+---------------------------
+
+Nous pourrons ajouter une réservation avec la méthode ``addBooking``. Cette methode
+créé une requête ``bookingRequest``, l'envoi à l'application et renvoi le numéro de notification
+enregistré::
+
+    >>> from datetime import date
+    >>> startDate = date(2012, 1, 1)
+    >>> endDate = date(2012, 1, 4)
+    >>> notificationId = client.addBooking('AAAA1234', startDate, endDate)
+
+Comme ceci est la première notification, le numéro de notification est 1::
+
+    >>> notificationId
+    1
+
+De la même manière nous pouvons récupérer cette nouvelle réservation. Nous faisons donc une
+récupération de réservation entre les mêmes dates::
+
+    >>> bookings = client.getBookings(startDate, endDate)
+    >>> len(bookings)
+    1
+    >>> from pprint import pprint
+    >>> pprint(bookings[0].__dict__)
+    {'_bookingType': 'booked',
+     '_cgtId': 'AAAA1234',
+     '_endDate': datetime.date(2012, 1, 4),
+     '_startDate': datetime.date(2012, 1, 1)}
+
+On constate bien que le type de réservation par défaut est le type `booked`.
+
+Ajout d'une réservation indisponible
+------------------------------------
+
+Ajoutons maintenant une deuxième réservation pour le même hébergement à des dates
+différentes::
+
+    >>> newStartDate = date(2012, 2, 11)
+    >>> newEndDate = date(2012, 2, 16)
+    >>> notificationId = client.addBooking('AAAA1234', newStartDate, newEndDate, 'unavailable')
+
+Si l'on récupère l'ensemble des réservations::
+
+    >>> bookings = client.getBookings(startDate, newEndDate)
+
+Il y a maintenant deux réservations dans l'application::
+
+    >>> len(bookings)
+    2
+
+Les réservations sont renvoyés dans l'ordre donc le contenu de la deuxième réservation est
+celui-ci::
+
+    >>> pprint(bookings[1].__dict__)
+    {'_bookingType': 'unavailable',
+     '_cgtId': 'AAAA1234',
+     '_endDate': datetime.date(2012, 2, 16),
+     '_startDate': datetime.date(2012, 2, 11)}
+
+On remarque que le type de réservation est bien de type `unavailable`
+
+Libérer une réservation existante
+---------------------------------
+
+Grace à `addBooking`, l'utilisateur peut aussi libérer une réservation ou un sous ensemble
+d'une réservation, autrement dit rendre disponible l'hébergement entre deux dates.
+
+Sur la réservation précédente entre le 11/02/12 et le 16/02/12 imaginons que l'utilisateur
+annule la réservation du 13/02/12 et du 14/02/12 pour l'hébergement 'AAAA1234'::
+
+    >>> availableStartDate = date(2012, 2, 13)
+    >>> availableEndDate = date(2012, 2, 14)
+    >>> notificationId = client.addBooking('AAAA1234', availableStartDate, availableEndDate, 'available')
+
+Si l'on récupère l'ensemble des réservations::
+
+    >>> bookings = client.getBookings(startDate, newEndDate)
+
+Nous nous retrouvons avec 3 réservations non consécutives::
+
+    >>> len(bookings)
+    3
+
+La première réservation inchangée::
+
+    >>> pprint(bookings[0].__dict__)
+    {'_bookingType': 'booked',
+     '_cgtId': 'AAAA1234',
+     '_endDate': datetime.date(2012, 1, 4),
+     '_startDate': datetime.date(2012, 1, 1)}
+
+La deuxième réservations entre le 11/02/12 et le 12/02/12::
+
+    >>> pprint(bookings[1].__dict__)
+    {'_bookingType': 'unavailable',
+     '_cgtId': 'AAAA1234',
+     '_endDate': datetime.date(2012, 2, 12),
+     '_startDate': datetime.date(2012, 2, 11)}
+
+La troixième réservations entre le 15/02/12 et le 16/02/12::
+
+    >>> pprint(bookings[2].__dict__)
+    {'_bookingType': 'unavailable',
+     '_cgtId': 'AAAA1234',
+     '_endDate': datetime.date(2012, 2, 16),
+     '_startDate': datetime.date(2012, 2, 15)}
+
+On remarque que les réservations renvoyées sont ordonnées par date.
+
+
+Changer un type de réservation
+------------------------------
+
+Pour changer un type de réservation par exemple de réservé (`booked`) à indisponible (`unavailable`),
+il suffit d'enregistrer la réservation aux mêmes dates.
+
+Imaginons que la réservation pour l'hébergement 'AAAA1234' du 15/02/12 doivent être rendu réservé plutôt qu'indisponible.
+Nous ajouter une réservation pour cette date pour le même hébergement en spécifiant le type de réservation
+à réservé::
+
+    >>> client.addBooking('AAAA1234', date(2012, 2, 15), date(2012, 2, 15), 'booked')
+    4
+
+Nous nous retrouvons avec 4 réservations non consécutives::
+
+    >>> bookings = client.getBookings(startDate, newEndDate)
+    >>> len(bookings)
+    4
+
+La troixième réservations du 15/02/12 est maintenant à l'état réservé::
+
+    >>> pprint(bookings[2].__dict__)
+    {'_bookingType': 'booked',
+     '_cgtId': 'AAAA1234',
+     '_endDate': datetime.date(2012, 2, 15),
+     '_startDate': datetime.date(2012, 2, 15)}
+
+La quatrième réservation indisponible le 16/02/12::
+
+    >>> pprint(bookings[3].__dict__)
+    {'_bookingType': 'unavailable',
+     '_cgtId': 'AAAA1234',
+     '_endDate': datetime.date(2012, 2, 16),
+     '_startDate': datetime.date(2012, 2, 16)}
+
+
+Ajouter des jours à une réservation existante
+---------------------------------------------
+
+Pour ajouter des jours à une réservation il suffit d'enregistrer la réservation pour
+le même enregistrement avec les nouvelles dates.
+
+Prennons par exemple une extension pour la réservation du 01/01/2012 au 04/01/2012 et
+étendons la jusqu'au 09/01/2012. Il nous suffit d'enregistrer la réservation entre le
+05/01/2012 et le 09/01/2012::
+
+    >>> client.addBooking('AAAA1234', date(2012, 1, 5), date(2012, 1, 9))
+    5
+
+Nous nous retrouvons avec les mêmes 4 réservations non consécutives::
+
+    >>> bookings = client.getBookings(startDate, newEndDate)
+    >>> len(bookings)
+    4
+
+Et si l'on regarde la première (dans l'ordre chronologique), nous obtenons bien la réservation
+étendue:
+
+    >>> pprint(bookings[0].__dict__)
+    {'_bookingType': 'booked',
+     '_cgtId': 'AAAA1234',
+     '_endDate': datetime.date(2012, 1, 9),
+     '_startDate': datetime.date(2012, 1, 1)}
+
+Gestion d'erreurs
+-----------------
+
+L'application empêche toute enregistrement de réservation dans le passé::
+
+    >>> client.addBooking('AAAA1234', date(1980, 1, 1), date(1980, 1, 4))
+    Traceback (most recent call last):
+    ...
+    FaultException: Booking date in the past
+    ...
+
+L'application empêche que la date de début de réservation soit supérieur à la date
+de fin de réservation
+
+    >>> client.addBooking('AAAA1234', date(2015, 1, 4), date(2015, 1, 1))
+    Traceback (most recent call last):
+    ...
+    FaultException: Start date is after end date
+    ...
+
+L'application empêche l'enregistrement de tout autre type de réservation que `booked`, `unavailable` ou `available`
+
+    >>> client.addBooking('AAAA1234', date(2015, 1, 1), date(2015, 1, 4), 'nimportequoi')
+    Traceback (most recent call last):
+    ...
+    FaultException: Wrong booking type. Must be booked or available or unavailable
+    ...
+
+L'application empêche l'enregistrement d'une réservation pour un numéro d'hébergement ne correspondant pas au format suivant: `[A-Z]{4}[0-9]{4}`
+
+    >>> client.addBooking('23', date(2015, 1, 1), date(2015, 1, 4))
+    Traceback (most recent call last):
+    ...
+    FaultException: Wrong CGT Id format. Must match [A-Z]{4}[0-9]{4}
+    ...

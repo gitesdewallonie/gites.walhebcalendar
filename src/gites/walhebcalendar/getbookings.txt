@@ -1,0 +1,84 @@
+============================
+Récupération de réservations
+============================
+
+.. function:: getBookings(minDate, maxDate, cgtId)
+
+    Récupère des réservations entre deux dates pour un ensemble d'hébergements
+
+    :param minDate: date correspondant à la borne inférieure de l'ensemble des dates de réservation
+    :param enDate: date correspondant à la borne supérieure de l'ensemble des dates de réservation
+    :param cgtId: code CGT de l'hébergement
+
+Requete
+=======
+
+L'utilisateur peut demander l'ensemble des réservations existantes entre deux date pour un ou plusieurs hébergements.
+Les critères de selection sont :
+
+- le premier jour de la réservation
+- le dernier jour de la réservation
+- le code de l'hébergement
+
+Format
+------
+
+Un requête SOAP contient:
+
+   +-------------------+--------------------------+--------------+---------------------------+---------------------------+
+   | **attribut**      | **description**          | multiplicité | format                    | example                   |
+   +===================+==========================+==============+===========================+===========================+
+   |  ``startDate``    | premier jour de la       |              |                           |                           |
+   |                   | réservation              |    1..1      | Date                      |  2009-01-01               |
+   +-------------------+--------------------------+--------------+---------------------------+---------------------------+
+   |  ``endDate``      | dernier jour de la       |              |                           |                           |
+   |                   | réservation              |    1..1      | Date                      |  2009-01-01               |
+   +-------------------+--------------------------+--------------+---------------------------+---------------------------+
+   |  ``cgtId``        | code CGT de l'hebergement|              | String                    |                           |
+   |                   |                          |    0..1      | Format: [A-Z]{4}[0-9]{4}  |  GFLX1234                 |
+   +-------------------+--------------------------+--------------+---------------------------+---------------------------+
+
+Pre conditions
+--------------
+
+- La date minDate est inférieure ou égale à maxDate
+
+Réponse
+=======
+
+La réponse contient une liste de réservations (``bookings``).
+
+Format
+------
+
+Une réservation contient les champs suivant:
+
+   +-------------------+--------------------------+--------------+---------------------------+---------------------------+
+   | **attribut**      | **description**          | multiplicité | format                    | example                   |
+   +===================+==========================+==============+===========================+===========================+
+   |  ``cgtId``        | code CGT de l'hebergement|              | String                    |                           |
+   |                   |                          |    1..1      | Format:  [A-Z]{4}[0-9]{4} |  GFLX1234                 |
+   +-------------------+--------------------------+--------------+---------------------------+---------------------------+
+   |  ``startDate``    | premier jour de la       |              |                           |                           |
+   |                   | réservation              |    1..1      | Date                      |  2009-01-01               |
+   +-------------------+--------------------------+--------------+---------------------------+---------------------------+
+   |  ``endDate``      | dernier jour de la       |              |                           |                           |
+   |                   | réservation              |    1..1      | Date                      |  2009-01-01               |
+   +-------------------+--------------------------+--------------+---------------------------+---------------------------+
+   |  ``bookingType``  | type de réservation      |    1..1      | String: ``booked`` ou     |  booked                   |
+   |                   |                          |              | ``unavailable``           |                           |
+   +-------------------+--------------------------+--------------+---------------------------+---------------------------+
+
+Post conditions
+---------------
+
+- ``bookings`` correspond à la liste des réservations dont les dates sont supérieures ou égales à la borne inférieure donnée (minDate) et
+  inférieures ou égales à la borne supérieure donnée (maxDate) ;
+- Si cgtIds est fourni, seul les réservations des hébergements concerné sont renvoyés.
+- La date startDate est inférieure ou égale à endDate ;
+- Les réservations sont triées par date.
+
+Examples
+========
+
+.. includedoc:: gites.walhebcalendar.browser.tests:/getbookings.txt

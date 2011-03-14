@@ -8,6 +8,9 @@ Contents:
 
    introduction
    addbooking
+   getbookings
+   getnotifications
+   delbookings
    diag
    wsdl
    api

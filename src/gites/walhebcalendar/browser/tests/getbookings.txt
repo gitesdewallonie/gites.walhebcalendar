@@ -1,0 +1,153 @@
+Test setup:
+
+    >>> from plone.testing import z2
+    >>> with z2.zopeApp() as app:
+    ...     pass
+
+L'url de l'application instanciée pour ce test est contenu dans ``calendarUrl``
+
+    >>> calendarUrl
+    'http://localhost:55001/calendar'
+
+Grace à cet url, nous pouvons envoyer des requêtes SOAP vers l'application.
+Nous instancions alors un client::
+
+    >>> from gites.walhebcalendar.client import CalendarClient
+    >>> client = CalendarClient(calendarUrl)
+
+Récupération simple avec numéro d'hébergement
+---------------------------------------------
+
+Par défaut dans l'application il n'existe aucune réservation donc si nous envoyons une requête
+maintenant nous n'obtenons qu'une liste vide::
+
+    >>> from datetime import date
+    >>> startDate = date(2012, 1, 1)
+    >>> endDate = date(2012, 1, 4)
+    >>> bookings = client.getBookings(startDate, endDate)
+    >>> len(bookings)
+    0
+
+Pour pouvoir récupérer il faut donc tout d'abord ajouter une réservation::
+
+    >>> notificationId = client.addBooking('AAAA1234', startDate, endDate)
+
+Cette réservation peut alors être récupéré via la méthode ``getBookings``::
+
+    >>> bookings = client.getBookings(startDate, endDate, 'AAAA1234')
+    >>> len(bookings)
+    1
+
+Et si nous regardons le contenu de cette réservation nous obtenons::
+
+    >>> from pprint import pprint
+    >>> pprint(bookings[0].__dict__)
+    {'_bookingType': 'booked',
+     '_cgtId': 'AAAA1234',
+     '_endDate': datetime.date(2012, 1, 4),
+     '_startDate': datetime.date(2012, 1, 1)}
+
+Bien sûr si nous faisons une requête pour d'autres dates nous n'obtenons rien::
+
+    >>> bookings = client.getBookings(date(2012, 2, 4), date(2012, 2, 5), 'AAAA1234')
+    >>> len(bookings)
+    0
+
+De même si nous demandons les réservations d'un autre hébergement nous n'obtenons rien::
+
+    >>> bookings = client.getBookings(startDate, endDate, 'BBBB4567')
+    >>> len(bookings)
+    0
+
+L'application renvoit toujours des réservations non consécutives. Donc si nous ajoutons une réservationavec le même type de réservation, le même numéro d'hébergement mais une date consécutive par rapport à la précédente nous obtenons toujours une seule réservation. Prennons par exemple les 05/01/12 et 06/01/12:
+
+    >>> extendedStartDate = date(2012, 1, 5)
+    >>> extendedEndDate = date(2012, 1, 6)
+    >>> notificationId = client.addBooking('AAAA1234', extendedStartDate, extendedEndDate)
+    >>> bookings = client.getBookings(startDate, extendedEndDate, 'AAAA1234')
+    >>> len(bookings)
+    1
+
+Et si nous regardons le contenu de cette réservation nous obtenons::
+
+    >>> from pprint import pprint
+    >>> pprint(bookings[0].__dict__)
+    {'_bookingType': 'booked',
+     '_cgtId': 'AAAA1234',
+     '_endDate': datetime.date(2012, 1, 6),
+     '_startDate': datetime.date(2012, 1, 1)}
+
+
+Récupération pour un ensemble de numéros d'hébergement
+------------------------------------------------------
+
+L'application permet d'obtenir les réservations entre deux dates pour un ensemble précis d'hébergement.
+Pour pouvoir tester cette fonctionalité, ajoutons une réservation pour un autre hébergement::
+
+    >>> newStartDate = date(2012, 1, 1)
+    >>> newEndDate = date(2012, 1, 10)
+    >>> notificationId = client.addBooking('BBBB5678', extendedStartDate, extendedEndDate)
+
+L'hébergement 'AAAA1234' a bien 1 réservation::
+
+    >>> bookings = client.getBookings(newStartDate, newEndDate, 'AAAA1234')
+    >>> len(bookings)
+    1
+
+L'hébergement 'BBBB5678' a bien 1 réservation::
+
+    >>> bookings = client.getBookings(newStartDate, newEndDate, 'BBBB5678')
+    >>> len(bookings)
+    1
+
+Et nous pouvons demander l'ensemble des réservations pour ces deux hébergements pour ces mêmes dates::
+
+    >>> bookings = client.getBookings(newStartDate, newEndDate, ['AAAA1234', 'BBBB5678'])
+    >>> len(bookings)
+    2
+
+
+Récupération simple sans numéro d'hébergement
+---------------------------------------------
+
+L'application permet aussi au client de demander l'ensemble des reservations entre deux dates sans
+préciser le numéro d'hébergement. L'application renvoit alors l'ensemble des reservations connues par le système entre les deux dates demandées:
+
+    >>> bookings = client.getBookings(startDate, endDate)
+    >>> len(bookings)
+    1
+
+
+Gestion d'erreurs
+-----------------
+
+L'application empêche toute récupération de réservation dans le passé::
+
+    >>> client.getBookings(date(1980, 1, 1), date(1980, 1, 4))
+    Traceback (most recent call last):
+    ...
+    FaultException: Booking date in the past
+    ...
+
+L'application empêche que la date de début de réservation soit supérieur à la date
+de fin de réservation
+
+    >>> client.getBookings(date(2015, 1, 4), date(2015, 1, 1))
+    Traceback (most recent call last):
+    ...
+    FaultException: Start date is after end date
+    ...
+
+L'application empêche que l'on récupère les réservations pour un ensemble trop grand d'hébergements. L'utilisateur devrait utiliser la fonctionalité expliquée dans 'Récupération simple sans numéro d'hébergement'.
+
+Avec une liste de 2000 hébergements au format 'AAAA0001', 'AAAA0002', ...
+
+    >>> hebergementList = ['AAAA%04i' % i for i in range(1, 2000)]
+
+Nous obtenons l'erreur suivante:
+
+    >>> client.getBookings(date(2015, 1, 1), date(2015, 1, 14), hebergementList)
+    Traceback (most recent call last):
+    ...
+    FaultException: Too many CGT ids. Maximum is 1000. If you provide no CGT id, the system will return the bookings for all CGT ids
+    ...

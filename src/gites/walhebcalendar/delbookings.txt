@@ -1,20 +1,19 @@
-=======================
-Ajout d'une reservation
-=======================
+============================
+Annulation d'une reservation
+============================
 
-.. function:: addBooking(cgtId, startDate, endDate, bookingType)
+.. function:: cancelBooking(cgtId, startDate, endDate)
 
-    Ajout d'une réservation pour l'hébergement **cgtId** entre deux dates.
+    Annule une ou plusieurs réservations pour un hébergement
 
     :param cgtId: code CGT de l'hébergement
-    :param startDate: date du début de la réservation
-    :param endDate: date de fin de la réservation
-    :rtype: notificationId: le numéro de notification
+    :param startDate: date du début de l'annulation de réservations
+    :param endDate: date de fin de l'annulation de réservations ;
 
 Requete
 =======
 
-L'utilisateur peut enregistrer une réservation entre deux dates pour un hébergement.
+L'utlisateur peut annuler une ou plusieurs réservations entre deux dates pour un hébergement.
 
 Format
 ------
@@ -25,35 +24,25 @@ Un requête SOAP contient:
    | **attribut**      | **description**          | multiplicité | format                    | example                   |
    +===================+==========================+==============+===========================+===========================+
    |  ``cgtId``        | code CGT de l'hebergement|              | String                    |                           |
-   |                   |                          |    1..1      | Format: '[A-Z]{4}[0-9]{4}'|  GFLX1234                 |
+   |                   |                          |    1..1      | Format: [A-Z]{4}[0-9]{4}  |  GFLX1234                 |
    +-------------------+--------------------------+--------------+---------------------------+---------------------------+
    |  ``startDate``    | premier jour de la       |              |                           |                           |
-   |                   | réservation              |    1..1      | Date                      |  2009-01-01               |
+   |                   | réservation à annuler    |    1..1      | Date                      |  2009-01-01               |
    +-------------------+--------------------------+--------------+---------------------------+---------------------------+
    |  ``endDate``      | dernier jour de la       |              |                           |                           |
-   |                   | réservation              |    1..1      | Date                      |  2009-01-01               |
-   +-------------------+--------------------------+--------------+---------------------------+---------------------------+
-   |  ``bookingType``  | type de réservation      |    0..1      | String: ``booked`` ou     |  booked                   |
-   |                   |                          |              | ``unavailable`` ou        |                           |
-   |                   |                          |              | ``available``             |                           |
+   |                   | réservation à annuler    |    1..1      | Date                      |  2009-01-01               |
    +-------------------+--------------------------+--------------+---------------------------+---------------------------+
 
 Pre conditions
 --------------
 
 - La date startDate est inférieure ou égale à endDate
-- bookingType correspond à l'une des valeurs suivantes :
 
-  - réservé (booked)
-  - indisponible (unavailable)
-  - disponible (available)
-
-- bookingType n'est pas obligatoire, s'il n'est pas soumis le type booked est choisi par défaut.
 
 Réponse
 =======
 
-La réponse contient le numéro de notification lié à l'enregistrement de la réservation.
+La réponse contient le numéro de notification lié à l'enregistrement d'annulation de réservations.
 
 Format
 ------
@@ -70,11 +59,5 @@ Un réponse contient:
 Post conditions
 ---------------
 
-- Si la réservation est de type indisponible ou réservé, la réservation est enregistrée une seule fois dans le système.
-- Si la réservation est de type disponible, l'ensemble des réservations correspondants aux critères sont effacées.
-
-Examples
-========
-
-.. includedoc:: gites.walhebcalendar.browser.tests:/addbooking.txt
+- L'ensemble des réservations d'un hébergement entre startDate et endDate sont effacées et ce y compris les réservations dont les dates correspondent à un sous ensemble des dates données.
 

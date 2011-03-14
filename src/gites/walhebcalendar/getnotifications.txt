@@ -1,0 +1,15 @@
+=============================
+Récupération de notifications
+=============================
+
+.. function:: getNotifications(minNotificationId, maxNotificationId=None)
+
+    Récupération de l'ensemble des notifications compris entre les numéros de notification donnés.
+
+    :param minNotificationId: numéro de notification correspondant à la borne inférieure de l'ensemble des notifications.
+    :param maxNotificationId: numéro de notification correspondant à la borne supérieure de l'ensemble des notifications (optionnel)
+
+Requete
+=======
+
+
