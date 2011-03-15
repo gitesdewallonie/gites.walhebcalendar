@@ -47,6 +47,9 @@ class CalendarClient(object):
         return bookingLocator().getbookingSOAP
 
     def addBooking(self, cgtId, startDate, endDate, bookingType='booked'):
+        """
+        Add a booking
+        """
         bookingRequest = addBookingRequest()
         bookingRequest._cgtId = cgtId
         bookingRequest._startDate = startDate
@@ -56,6 +59,9 @@ class CalendarClient(object):
         return response._notificationId
 
     def getBookings(self, startDate, endDate, cgtIds=[]):
+        """
+        Get available bookings
+        """
         if not isinstance(cgtIds, (list, set)):
             cgtIds = [cgtIds]
         bookingRequest = getBookingsRequest()
@@ -66,6 +72,9 @@ class CalendarClient(object):
         return response._bookings
 
     def getNotifications(self, minNotificationId, maxNotificationId=None):
+        """
+        Get available notifications
+        """
         notifRequest = getNotificationsRequest()
         notifRequest._minNotificationId = minNotificationId
         notifRequest._maxNotificationId = maxNotificationId
@@ -73,6 +82,9 @@ class CalendarClient(object):
         return response._notifications
 
     def cancelBooking(self, cgtId, startDate, endDate):
+        """
+        Cancel a booking
+        """
         cancelRequest = cancelBookingRequest()
         cancelRequest._cgtId = cgtId
         cancelRequest._startDate = startDate

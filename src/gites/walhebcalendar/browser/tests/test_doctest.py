@@ -17,7 +17,8 @@ def setUp(test):
     calendarUrl = app.calendar.absolute_url()
     app['acl_users'].userFolderAddUser('user1', 'secret', ['Authenticated'], [])
     test.globs['calendarUrl'] = calendarUrl
-    print app
+    import transaction
+    transaction.commit()
 
 
 def test_suite():

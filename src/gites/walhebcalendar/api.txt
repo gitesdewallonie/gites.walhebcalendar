@@ -2,22 +2,18 @@
 API
 ===
 
-Inventory
-=========
-
 Base types
 ----------
 
-.. module:: arsia.webservice.core.inventory.animal
+.. module:: gites.walhebcalendar.calendar
 
-.. autoclass:: BaseWSAnimal
+.. autoclass:: Calendar
     :members:
     :show-inheritance:
-    :inherited-members:
 
-.. module:: arsia.webservice.opa.inventory.animal
+.. module:: gites.walhebcalendar.client
 
-.. autoclass:: OPAWSAnimal
+.. autoclass:: CalendarClient
     :members:
     :show-inheritance:
     :inherited-members:
@@ -26,26 +22,51 @@ Base types
 Interfaces
 ----------
 
+.. autointerface:: gites.walhebcalendar.interfaces.ICalendarApplication
+
 .. autointerface:: gites.walhebcalendar.browser.interfaces.ISOAPRequestValidator
+    :members:
 
+.. autointerface:: gites.walhebcalendar.browser.interfaces.IAddBookingRequest
 
+.. autointerface:: gites.walhebcalendar.browser.interfaces.IGetBookingRequest
+
+.. autointerface:: gites.walhebcalendar.browser.interfaces.IGetNotificationRequest
+
+.. autointerface:: gites.walhebcalendar.browser.interfaces.ICancelBookingRequest
 
 Validation Event
 ----------------
 
-.. module:: arsia.webservice.opa.inventory.validation
+.. module:: gites.walhebcalendar.browser.validation
 
-.. autoclass:: OPATroupeauValidator
+.. autoclass:: GetBookingRequestValidation
     :members:
     :show-inheritance:
     :inherited-members:
 
+.. autoclass:: GetNotificationsRequestValidation
+    :members:
+    :show-inheritance:
+    :inherited-members:
+
+.. autoclass:: AddBookingRequestValidation
+    :members:
+    :show-inheritance:
+    :inherited-members:
+
+.. autoclass:: CancelBookingRequestValidation
+    :members:
+    :show-inheritance:
+    :inherited-members:
+
+
 View
 ----
 
-.. module:: arsia.webservice.opa.inventory.inventory
+.. module:: gites.walhebcalendar.browser.booking
 
-.. autoclass:: SOAPOPAInventoryView
+.. autoclass:: SOAPBookingManagement
     :members:
     :show-inheritance:
     :inherited-members:
@@ -54,9 +75,3 @@ View
     .. automethod:: animal
 
         Animal list of properties to fetch into AFSCA db
-
-
-
-
-Movement
-========

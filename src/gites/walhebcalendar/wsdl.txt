@@ -2,6 +2,7 @@
 WSDL
 ====
 
+Also available here: http://dev.walhebcalendar.be/++resource++booking.wsdl
 
 .. literalinclude:: booking.wsdl
     :language: xml

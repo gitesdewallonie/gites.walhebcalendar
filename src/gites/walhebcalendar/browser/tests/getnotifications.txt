@@ -1,9 +1,3 @@
-Test setup:
-
-    >>> from plone.testing import z2
-    >>> with z2.zopeApp() as app:
-    ...     pass
-
 L'url de l'application instanciée pour ce test est contenu dans ``calendarUrl``
 
     >>> calendarUrl
@@ -38,3 +32,72 @@ Nous avons alors 3 réservations::
     >>> notifications = client.getNotifications(1, 3)
     >>> len(notifications)
     3
+
+L'utilisateur peut demander un sous ensemble de ces notifications::
+
+    >>> notifications = client.getNotifications(2, 3)
+    >>> len(notifications)
+    2
+
+Une notification de reservation contient les informations suivantes::
+
+    >>> from pprint import pprint
+    >>> pprint(notifications[0].__dict__)
+    {'_bookingType': 'booked',
+     '_cgtId': 'BBBB5678',
+     '_endDate': datetime.date(2012, 1, 4),
+     '_notificationId': 2,
+     '_startDate': datetime.date(2012, 1, 1)}
+
+Une notification d'annulation de réservation contient les informations suivantes::
+
+    >>> from pprint import pprint
+    >>> pprint(notifications[1].__dict__)
+    {'_bookingType': 'available',
+     '_cgtId': 'BBBB5678',
+     '_endDate': datetime.date(2012, 1, 4),
+     '_notificationId': 3,
+     '_startDate': datetime.date(2012, 1, 1)}
+
+Récuparation avec 1 borne
+-------------------------
+
+L'utilisateur ne doit pas obligatoirement donné de borne supérieure. Sans borne supérieure,
+l'application renvoit l'ensemble des notifications depuis la borne inférieure jusqu'à la dernière
+notification enregistrée.
+
+    >>> notifications = client.getNotifications(1)
+    >>> len(notifications)
+    3
+    >>> notifications = client.getNotifications(3)
+    >>> len(notifications)
+    1
+
+Gestion d'erreurs
+-----------------
+
+L'application empêche que la borne supérieure soit inférieure à la borne inférieure::
+
+    >>> client.getNotifications(3, 1)
+    Traceback (most recent call last):
+    ...
+    FaultException: minNotificationId must be lower or equal to maxNotificationId
+    ...
+
+
+L'application empêche que les numéros de notification soit inférieure à 0::
+
+    >>> client.getNotifications(-3, 1)
+    Traceback (most recent call last):
+    ...
+    FaultException: minNotificationId and maxNotificationId must be higher or equal to 1
+    ...
+
+L'application empêche que les numéros de notification soit supérieure au maximum des numéros de notification::
+
+    >>> client.getNotifications(1, 5)
+    Traceback (most recent call last):
+    ...
+    FaultException: minNotificationId and maxNotificationId must be lower or equal to the current maximum notification id
+    ...
+

@@ -116,7 +116,7 @@ class TestFunctionalCancelBooking(TestFunctional):
         self.assertEqual(bookings[1]._endDate, date(2012, 1, 10))
         client.cancelBooking('AAAA0010', datetime(2012, 1, 3), datetime(2012, 1, 7))
 
-        notifications = client.getNotifications(0)
+        notifications = client.getNotifications(1)
         self.assertEqual(len(notifications), 3)
         bookings = client.getBookings(datetime(2012, 1, 1), datetime(2012, 1, 10),
                                       'AAAA0010')
@@ -187,7 +187,7 @@ class TestFunctionalGetNotifications(TestFunctional):
         msg_re = 'minNotificationId must be lower or equal to maxNotificationId'
         with self.assertRaisesRegexp(ZSI.FaultException, msg_re):
             client.getNotifications(6, 2)
-        msg_re = 'minNotificationId and maxNotificationId must be higher or equal to 0'
+        msg_re = 'minNotificationId and maxNotificationId must be higher or equal to 1'
         with self.assertRaisesRegexp(ZSI.FaultException, msg_re):
             client.getNotifications(-2, 2)
         msg_re = 'minNotificationId and maxNotificationId must be lower or equal to the current maximum notification id'

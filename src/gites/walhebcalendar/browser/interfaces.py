@@ -21,13 +21,13 @@ class ISOAPRequestValidator(Interface):
 
 class IAddBookingRequest(Interface):
     """
-    Add booking Request interface
+    Add booking Request marker interface
     """
 
 
 class IGetBookingRequest(Interface):
     """
-    Get booking Request interface
+    Get booking Request marker interface
     """
 
 

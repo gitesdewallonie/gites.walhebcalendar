@@ -21,6 +21,9 @@ class SOAPBookingManagement(object):
 
     @validate
     def addBookingRequest(self, requestData, response):
+        """
+        Add a booking
+        """
         session = self.session
         notf = self._addNotification(requestData)
         if requestData._bookingType in ['booked', 'unavailable']:
@@ -35,6 +38,9 @@ class SOAPBookingManagement(object):
 
     @validate
     def getBookingsRequest(self, requestData, response):
+        """
+        Get all available bookings
+        """
         bookings = []
         lastKey = None
         for booking in self._getBookings(requestData._cgtId, requestData._minDate,
@@ -57,6 +63,9 @@ class SOAPBookingManagement(object):
 
     @validate
     def getNotificationsRequest(self, requestData, response):
+        """
+        Get all available notifications
+        """
         notfs = []
         minNotificationId = requestData._minNotificationId
         maxNotificationId = requestData._maxNotificationId
@@ -78,6 +87,9 @@ class SOAPBookingManagement(object):
 
     @validate
     def cancelBookingRequest(self, requestData, response):
+        """
+        Cancel a notification
+        """
         requestData._bookingType = 'available'
         return self.addBookingRequest(requestData, response)
 
