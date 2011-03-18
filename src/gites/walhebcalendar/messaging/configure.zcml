@@ -1,0 +1,9 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:grok="http://namespaces.zope.org/grok"
+           i18n_domain="gites.walhebcalendar">
+
+  <grok:grok package=".connection"/>
+  <grok:grok package=".consumer"/>
+  <grok:grok package=".gdw"/>
+
+</configure>
