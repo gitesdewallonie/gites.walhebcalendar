@@ -17,6 +17,7 @@ from gites.walhebcalendar.browser.interfaces import (ISOAPRequestValidator, IAdd
                                                      IGetBookingRequest,
                                                      IGetNotificationRequest,
                                                      ICancelBookingRequest)
+CGTID_FORMAT = '[A-Z]{4}[0-9]{1,4}'
 
 
 class BaseValidation(grok.Subscription):
@@ -114,11 +115,10 @@ class GetBookingRequestValidation(BaseValidation):
         """
         Test CGT id format
         """
-        CGTID_FORMAT = '[A-Z]{4}[0-9]{4}'
         for cgtId in self.bookingRequest._cgtId:
             cgtId = str(cgtId)
             if not re.match(CGTID_FORMAT, cgtId):
-                raise ZSI.Fault(ZSI.Fault.Client, u"Wrong CGT Id format. Must match [A-Z]{4}[0-9]{4}")
+                raise ZSI.Fault(ZSI.Fault.Client, u"Wrong CGT Id format. Must match %s" % CGTID_FORMAT)
 
 
 class AddBookingRequestValidation(BaseValidation):
@@ -140,10 +140,9 @@ class AddBookingRequestValidation(BaseValidation):
         """
         Test CGT id format
         """
-        CGTID_FORMAT = '[A-Z]{4}[0-9]{4}'
         cgtId = str(self.bookingRequest._cgtId)
         if not re.match(CGTID_FORMAT, cgtId):
-            raise ZSI.Fault(ZSI.Fault.Client, u"Wrong CGT Id format. Must match [A-Z]{4}[0-9]{4}")
+            raise ZSI.Fault(ZSI.Fault.Client, u"Wrong CGT Id format. Must match %s" % CGTID_FORMAT)
 
     def validate(self):
         """
@@ -167,10 +166,9 @@ class CancelBookingRequestValidation(BaseValidation):
         """
         Test CGT id format
         """
-        CGTID_FORMAT = '[A-Z]{4}[0-9]{4}'
         cgtId = str(self.cancelRequest._cgtId)
         if not re.match(CGTID_FORMAT, cgtId):
-            raise ZSI.Fault(ZSI.Fault.Client, u"Wrong CGT Id format. Must match [A-Z]{4}[0-9]{4}")
+            raise ZSI.Fault(ZSI.Fault.Client, u"Wrong CGT Id format. Must match %s" % CGTID_FORMAT)
 
     def validate(self):
         """

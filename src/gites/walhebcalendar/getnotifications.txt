@@ -50,7 +50,7 @@ Une notification contient les champs suivant:
    | **attribut**      | **description**          | multiplicité | format                    | example                   |
    +===================+==========================+==============+===========================+===========================+
    |  ``cgtId``        | code CGT de l'hebergement|              | String                    |                           |
-   |                   |                          |    1..1      | Format:  [A-Z]{4}[0-9]{4} |  GFLX1234                 |
+   |                   |                          |    1..1      | Format: [A-Z]{4}[0-9]{1,4}|  GFLX1234                 |
    +-------------------+--------------------------+--------------+---------------------------+---------------------------+
    |``notificationId`` | numéro de notification   |              | Integer                   |                           |
    |                   |                          |    1..1      |                           |  44232                    |

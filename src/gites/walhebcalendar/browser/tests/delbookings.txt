@@ -85,10 +85,10 @@ de fin de réservation
     FaultException: Start date is after end date
     ...
 
-L'application empêche la suppression d'une réservation pour un numéro d'hébergement ne correspondant pas au format suivant: `[A-Z]{4}[0-9]{4}`
+L'application empêche la suppression d'une réservation pour un numéro d'hébergement ne correspondant pas au format suivant: `[A-Z]{4}[0-9]{1,4}`
 
     >>> client.cancelBooking('23', date(2012, 1, 2), date(2012, 1, 4))
     Traceback (most recent call last):
     ...
-    FaultException: Wrong CGT Id format. Must match [A-Z]{4}[0-9]{4}
+    FaultException: Wrong CGT Id format. Must match [A-Z]{4}[0-9]{1,4}
     ...

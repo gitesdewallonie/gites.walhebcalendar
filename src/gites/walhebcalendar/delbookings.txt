@@ -24,7 +24,7 @@ Un requête SOAP contient:
    | **attribut**      | **description**          | multiplicité | format                    | example                   |
    +===================+==========================+==============+===========================+===========================+
    |  ``cgtId``        | code CGT de l'hebergement|              | String                    |                           |
-   |                   |                          |    1..1      | Format: [A-Z]{4}[0-9]{4}  |  GFLX1234                 |
+   |                   |                          |    1..1      | Format: [A-Z]{4}[0-9]{1,4}|  GFLX1234                 |
    +-------------------+--------------------------+--------------+---------------------------+---------------------------+
    |  ``startDate``    | premier jour de la       |              |                           |                           |
    |                   | réservation à annuler    |    1..1      | Date                      |  2009-01-01               |

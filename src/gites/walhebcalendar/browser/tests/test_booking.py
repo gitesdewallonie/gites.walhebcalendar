@@ -49,7 +49,7 @@ class TestAddBooking(unittest.TestCase):
         bookingRequest._cgtId = ['-100']
         bookingRequest._minDate = date(2012, 1, 2)
         bookingRequest._maxDate = date(2012, 1, 9)
-        msg_re = "Wrong CGT Id format. Must match \[A-Z\]\{4\}\[0-9\]\{4\}"
+        msg_re = "Wrong CGT Id format. Must match \[A-Z\]\{4\}\[0-9\]\{1,4\}"
         with self.assertRaisesRegexp(ZSI.Fault, msg_re):
             validateARequest(bookingRequest)
 
