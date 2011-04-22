@@ -10,7 +10,7 @@ from affinitic.zamqp.consumer import Consumer
 from gites.walhebcalendar.messaging.interfaces import IGitesUpdate
 
 
-class GitesCalendarUpdateConsumer(Consumer):
+class WalhebCalendarUpdateConsumer(Consumer):
     grok.name('booking.update.gdw')
     queue = "booking.update.gdw"
     exchange = 'booking.update.gdw'

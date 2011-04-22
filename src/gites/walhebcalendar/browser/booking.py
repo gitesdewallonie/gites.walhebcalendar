@@ -10,6 +10,8 @@ from datetime import time
 from datetime import timedelta
 from dateutil.rrule import DAILY, rrule
 from zope.component import getUtility
+from zope.event import notify
+from zope.lifecycleevent import ObjectCreatedEvent
 from affinitic.db.interfaces import IDatabase
 from walhebcalendar.db.booking import Booking
 from walhebcalendar.db.notification import Notification
@@ -33,6 +35,7 @@ class SOAPBookingManagement(object):
             self._removeBookings(requestData)
         session.add(notf)
         session.flush()
+        notify(ObjectCreatedEvent(notf))
         response._notificationId = notf.notf_id
         return response
 

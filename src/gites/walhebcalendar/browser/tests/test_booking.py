@@ -14,9 +14,8 @@ from zope.component import getUtility
 from affinitic.db.interfaces import IDatabase
 from walhebcalendar.db.booking import Booking
 from walhebcalendar.db.notification import Notification
-from gites.walhebcalendar.calendar import calendar_setup
 from gites.walhebcalendar.client import CalendarClient
-from gites.walhebcalendar.testing import CALENDAR_ZSERVER, CALENDAR
+from gites.walhebcalendar.testing import CALENDAR, TestFunctional
 from gites.walhebcalendar.browser.booking import SOAPBookingManagement
 from gites.walhebcalendar.browser.utils import validateARequest
 from gites.walhebcalendar.zsi.booking_client import addBookingRequest, getBookingsRequest
@@ -78,19 +77,6 @@ class TestAddBooking(unittest.TestCase):
         msg_re = u"Wrong booking type. Must be booked or available or unavailable"
         with self.assertRaisesRegexp(ZSI.Fault, msg_re):
             validateARequest(bookingRequest)
-
-
-class TestFunctional(unittest.TestCase):
-
-    layer = CALENDAR_ZSERVER
-
-    def setUp(self):
-        self.app = app = self.layer['app']
-        calendar_setup(app)
-        app['acl_users'].userFolderAddUser('user1', 'secret', ['Authenticated'], [])
-        import transaction
-        transaction.commit()
-        self.calendarUrl = self.app.calendar.absolute_url()
 
 
 class TestFunctionalCancelBooking(TestFunctional):
