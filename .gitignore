@@ -1,0 +1,12 @@
+*.pyc
+.installed.cfg
+.mr.developer.cfg
+amqp.log
+bin/
+develop-eggs/
+include/
+lib/
+local/
+parts/
+*.egg-info
+var/
