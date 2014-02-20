@@ -36,6 +36,7 @@ build:
 	mkdir -p $(BUILDDIR)/eggs
 	cd $(BUILDDIR) && bin/python bootstrap.py buildout:eggs-directory=$(BUILDDIR)/eggs
 	cd $(BUILDDIR) && bin/buildout -c buildout.cfg buildout:eggs-directory=$(BUILDDIR)/eggs
+	cd $(BUILDDIR) && bin/test
 	echo $(DEBIANCORE)
 	touch build-stamp
 
