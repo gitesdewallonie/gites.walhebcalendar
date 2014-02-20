@@ -1,0 +1,24 @@
+#!/bin/sh
+set -e
+set -x
+
+PACKAGE="gites-walhebcalendar-website"
+
+
+case "$1" in
+    remove|deconfigure)
+	find /home/gdw/gites-walhebcalendar-website/eggs /home/gdw/gites-walhebcalendar-website/devel -name "*.pyc" -delete;
+	find /home/gdw/gites-walhebcalendar-website/eggs /home/gdw/gites-walhebcalendar-website/devel -name "*.pyo" -delete;
+	find /home/gdw/gites-walhebcalendar-website/eggs /home/gdw/gites-walhebcalendar-website/devel -name "*.bin" -delete;
+    ;;
+
+    upgrade|failed-upgrade)
+    ;;
+
+    *)
+        echo "prerm called with unknown argument \`$1'" >&2
+        exit 0
+    ;;
+esac
+
+exit 0

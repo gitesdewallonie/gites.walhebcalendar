@@ -1,0 +1,110 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+# This has to be exported to make some magic below work.
+export DH_OPTIONS
+
+INSTANCECOUNT := 1
+PACKAGE	  := gites-walhebcalendar-website
+CURDIR    := $(shell pwd)
+BUILDDIR  := $(CURDIR)/tmp/$(PACKAGE)
+DEBIANCORE    := $(CURDIR)/debian/$(PACKAGE)
+INSTALLDIR   := /home/gdw/$(PACKAGE)
+
+distribution := $(shell lsb_release -is)
+
+clean:
+	#rm -rf $(BUILDDIR)/
+	dh_testdir
+	dh_testroot
+	rm -rf build
+	rm -f build-stamp
+	dh_clean
+
+build:
+	mkdir -p $(BUILDDIR)
+	cp -ap ./bootstrap.py $(BUILDDIR)
+	cp -ap ./*.cfg $(BUILDDIR)
+	cd $(BUILDDIR) && virtualenv .
+	rm -rf $(BUILDDIR)/devel
+	rm -f $(BUILDDIR)/buildout.cfg
+	mkdir -p $(BUILDDIR)/eggs
+	cd $(BUILDDIR) && bin/python bootstrap.py buildout:eggs-directory=$(BUILDDIR)/eggs
+	cd $(BUILDDIR) && bin/buildout -c buildout.cfg buildout:eggs-directory=$(BUILDDIR)/eggs
+	echo $(DEBIANCORE)
+	touch build-stamp
+
+install-base:
+	rm -rf $(DEBIANCORE)
+	dh_testdir
+	dh_testroot
+	dh_clean -k -s
+	dh_installdirs -s
+	rm  ${BUILDDIR}/.mr.developer.cfg
+	rm  ${BUILDDIR}/.installed.cfg
+	rm -f ${BUILDDIR}/versions-picked.cfg
+	rm -fr ${BUILDDIR}/downloads
+
+install-website:
+	mkdir -p $(DEBIANCORE)/home/gdw/$(PACKAGE)
+	mkdir -p $(DEBIANCORE)/home/gdw/$(PACKAGE)/parts
+	find ${BUILDDIR}/bin -executable -type f -exec sed -i s%${BUILDDIR}%${INSTALLDIR}%g {} \;
+	sed -i s%${BUILDDIR}%${INSTALLDIR}%g ${BUILDDIR}/bin/instance
+	cp ${BUILDDIR}/bin/zopepy ${BUILDDIR}/parts/instance/bin/interpreter
+	sed -i s%${BUILDDIR}%${INSTALLDIR}%g ${BUILDDIR}/parts/instance/bin/interpreter
+	sed -i s%${BUILDDIR}%${INSTALLDIR}%g ${BUILDDIR}/parts/instance/etc/zope.conf
+	cp -ap $(BUILDDIR)/bin $(DEBIANCORE)/${INSTALLDIR}
+	cp -ap $(BUILDDIR)/devel $(DEBIANCORE)/${INSTALLDIR}
+	cp -ap $(BUILDDIR)/develop-eggs $(DEBIANCORE)/${INSTALLDIR}
+	find ${BUILDDIR}/develop-eggs -type f -exec sed -i s%${BUILDDIR}%${INSTALLDIR}%g {} \;
+	cp -ap $(BUILDDIR)/eggs $(DEBIANCORE)/${INSTALLDIR}
+	cp -ap $(BUILDDIR)/parts/omelette $(DEBIANCORE)/${INSTALLDIR}/parts
+	cp -ap $(BUILDDIR)/parts/localfs $(DEBIANCORE)/${INSTALLDIR}/parts
+	rm $(DEBIANCORE)/${INSTALLDIR}/bin/instance
+	for i in $(find $(DEBIANCORE)/${INSTALLDIR}/parts/omelette -type l); do old_link=$(readlink -m $i); new_link=$(echo $old_link | sed  s%${BUILDDIR}/${INSTALLDIR}/); rm $i; ln -f -s $new_link $i; done
+	find $(DEBIANCORE)/${INSTALLDIR} -name "*.pyc" -delete;
+	find $(DEBIANCORE)/${INSTALLDIR} -name "*.pyo" -delete;
+	mkdir -p $(DEBIANCORE)/home/gdw/$(PACKAGE)
+	mkdir -p $(DEBIANCORE)/${INSTALLDIR}/bin
+	mkdir -p $(DEBIANCORE)/${INSTALLDIR}/parts
+	mkdir -p $(DEBIANCORE)/${INSTALLDIR}/var/log
+	mkdir -p $(DEBIANCORE)/${INSTALLDIR}/var/filestorage
+	mkdir -p $(DEBIANCORE)/${INSTALLDIR}/var/blobstorage
+	mkdir -p $(DEBIANCORE)/${INSTALLDIR}/var/instance
+	cp -ap $(BUILDDIR)/bin/instance $(DEBIANCORE)/${INSTALLDIR}/bin
+	cp -ap $(BUILDDIR)/parts/instance $(DEBIANCORE)/${INSTALLDIR}/parts
+
+install: install-base install-website
+	#rm -rf $(BUILDDIR)/
+
+binary-common:
+	dh_testdir
+	dh_testroot
+
+	dh_installchangelogs
+
+	dh_installdocs
+	dh_installdebconf
+	dh_installinit
+	dh_installman
+	dh_link
+	dh_strip
+	dh_fixperms
+	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary-indep: build install
+	$(MAKE) -f debian/rules DH_OPTIONS=-i binary-common
+
+binary-arch: install
+	$(MAKE) -f debian/rules DH_OPTIONS=-a binary-common
+
+binary: binary-arch
+
+.PHONY: build clean binary install
