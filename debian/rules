@@ -26,11 +26,13 @@ clean:
 
 build:
 	mkdir -p $(BUILDDIR)
-	cp -ap ./bootstrap.py $(BUILDDIR)
+	cp -ap ./setup.py ./bootstrap.py $(BUILDDIR)
+	cp -apr docs $(BUILDDIR)
+	cp -apr src $(BUILDDIR)
 	cp -ap ./*.cfg $(BUILDDIR)
+	cp -ap ./*.txt $(BUILDDIR)
 	cd $(BUILDDIR) && virtualenv .
 	rm -rf $(BUILDDIR)/devel
-	rm -f $(BUILDDIR)/buildout.cfg
 	mkdir -p $(BUILDDIR)/eggs
 	cd $(BUILDDIR) && bin/python bootstrap.py buildout:eggs-directory=$(BUILDDIR)/eggs
 	cd $(BUILDDIR) && bin/buildout -c buildout.cfg buildout:eggs-directory=$(BUILDDIR)/eggs
