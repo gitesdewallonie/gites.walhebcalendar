@@ -16,8 +16,8 @@ Par défaut dans l'application il n'existe aucune réservation donc si nous envo
 maintenant nous n'obtenons qu'une liste vide::
 
     >>> from datetime import date
-    >>> startDate = date(2012, 1, 1)
-    >>> endDate = date(2012, 1, 4)
+    >>> startDate = date(2035, 1, 1)
+    >>> endDate = date(2035, 1, 4)
     >>> bookings = client.getBookings(startDate, endDate)
     >>> len(bookings)
     0
@@ -38,12 +38,12 @@ Et si nous regardons le contenu de cette réservation nous obtenons::
     >>> pprint(bookings[0].__dict__)
     {'_bookingType': 'booked',
      '_cgtId': 'AAAA1234',
-     '_endDate': datetime.date(2012, 1, 4),
-     '_startDate': datetime.date(2012, 1, 1)}
+     '_endDate': datetime.date(2035, 1, 4),
+     '_startDate': datetime.date(2035, 1, 1)}
 
 Bien sûr si nous faisons une requête pour d'autres dates nous n'obtenons rien::
 
-    >>> bookings = client.getBookings(date(2012, 2, 4), date(2012, 2, 5), 'AAAA1234')
+    >>> bookings = client.getBookings(date(2035, 2, 4), date(2035, 2, 5), 'AAAA1234')
     >>> len(bookings)
     0
 
@@ -55,8 +55,8 @@ De même si nous demandons les réservations d'un autre hébergement nous n'obte
 
 L'application renvoit toujours des réservations non consécutives. Donc si nous ajoutons une réservationavec le même type de réservation, le même numéro d'hébergement mais une date consécutive par rapport à la précédente nous obtenons toujours une seule réservation. Prennons par exemple les 05/01/12 et 06/01/12:
 
-    >>> extendedStartDate = date(2012, 1, 5)
-    >>> extendedEndDate = date(2012, 1, 6)
+    >>> extendedStartDate = date(2035, 1, 5)
+    >>> extendedEndDate = date(2035, 1, 6)
     >>> notificationId = client.addBooking('AAAA1234', extendedStartDate, extendedEndDate)
     >>> bookings = client.getBookings(startDate, extendedEndDate, 'AAAA1234')
     >>> len(bookings)
@@ -68,8 +68,8 @@ Et si nous regardons le contenu de cette réservation nous obtenons::
     >>> pprint(bookings[0].__dict__)
     {'_bookingType': 'booked',
      '_cgtId': 'AAAA1234',
-     '_endDate': datetime.date(2012, 1, 6),
-     '_startDate': datetime.date(2012, 1, 1)}
+     '_endDate': datetime.date(2035, 1, 6),
+     '_startDate': datetime.date(2035, 1, 1)}
 
 
 Récupération pour un ensemble de numéros d'hébergement
@@ -78,8 +78,8 @@ Récupération pour un ensemble de numéros d'hébergement
 L'application permet d'obtenir les réservations entre deux dates pour un ensemble précis d'hébergement.
 Pour pouvoir tester cette fonctionalité, ajoutons une réservation pour un autre hébergement::
 
-    >>> newStartDate = date(2012, 1, 1)
-    >>> newEndDate = date(2012, 1, 10)
+    >>> newStartDate = date(2035, 1, 1)
+    >>> newEndDate = date(2035, 1, 10)
     >>> notificationId = client.addBooking('BBBB5678', extendedStartDate, extendedEndDate)
 
 L'hébergement 'AAAA1234' a bien 1 réservation::

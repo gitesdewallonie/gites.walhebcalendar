@@ -15,8 +15,8 @@ Simple annulation de réservation
 Pour pouvoir annuler il faut bien sûr que le système contienne des réservations. Nous en ajoutons donc::
 
     >>> from datetime import date
-    >>> startDate = date(2012, 1, 1)
-    >>> endDate = date(2012, 1, 4)
+    >>> startDate = date(2035, 1, 1)
+    >>> endDate = date(2035, 1, 4)
     >>> notificationId = client.addBooking('AAAA1234', startDate, endDate)
 
 Il existe donc bien une réservation
@@ -38,17 +38,17 @@ Notification est bien 2 car c'est la seconde notification enregistrée dans le s
 Annulation d'un sous ensemble d'une réservation
 -----------------------------------------------
 
-Le système permet aussi d'annuler un sous ensemble d'une réservation enregistrer. Prennons par exemple une réservation entre le 01/01/2012 et le 04/01/2012::
+Le système permet aussi d'annuler un sous ensemble d'une réservation enregistrer. Prennons par exemple une réservation entre le 01/01/2035 et le 04/01/2035::
 
     >>> from datetime import date
-    >>> startDate = date(2012, 1, 1)
-    >>> endDate = date(2012, 1, 4)
+    >>> startDate = date(2035, 1, 1)
+    >>> endDate = date(2035, 1, 4)
     >>> client.addBooking('AAAA1234', startDate, endDate)
     3
 
-Nous allons annuler uniquement la réservation entre le 02/01/2012 et le 04/01/2012::
+Nous allons annuler uniquement la réservation entre le 02/01/2035 et le 04/01/2035::
 
-    >>> notificationId = client.cancelBooking('AAAA1234', date(2012, 1, 2), date(2012, 1, 4))
+    >>> notificationId = client.cancelBooking('AAAA1234', date(2035, 1, 2), date(2035, 1, 4))
 
 Nous avons toujours bien une réservation enregistrée::
 
@@ -56,14 +56,14 @@ Nous avons toujours bien une réservation enregistrée::
     >>> len(bookings)
     1
 
-Mais celle ci ne s'étant que du 01/01/2012 au 01/01/2012::
+Mais celle ci ne s'étant que du 01/01/2035 au 01/01/2035::
 
     >>> from pprint import pprint
     >>> pprint(bookings[0].__dict__)
     {'_bookingType': 'booked',
      '_cgtId': 'AAAA1234',
-     '_endDate': datetime.date(2012, 1, 1),
-     '_startDate': datetime.date(2012, 1, 1)}
+     '_endDate': datetime.date(2035, 1, 1),
+     '_startDate': datetime.date(2035, 1, 1)}
 
 Gestion d'erreurs
 -----------------
@@ -79,7 +79,7 @@ L'application empêche toute annulation de réservation dans le passé::
 L'application empêche que la date de début de réservation soit supérieur à la date
 de fin de réservation
 
-    >>> client.cancelBooking('AAAA1234', date(2012, 1, 4), date(2012, 1, 2))
+    >>> client.cancelBooking('AAAA1234', date(2035, 1, 4), date(2035, 1, 2))
     Traceback (most recent call last):
     ...
     FaultException: Start date is after end date
@@ -87,7 +87,7 @@ de fin de réservation
 
 L'application empêche la suppression d'une réservation pour un numéro d'hébergement ne correspondant pas au format suivant: `[A-Z]{4}[0-9]{1,4}`
 
-    >>> client.cancelBooking('23', date(2012, 1, 2), date(2012, 1, 4))
+    >>> client.cancelBooking('23', date(2035, 1, 2), date(2035, 1, 4))
     Traceback (most recent call last):
     ...
     FaultException: Wrong CGT Id format. Must match [A-Z]{4}[0-9]{1,4}

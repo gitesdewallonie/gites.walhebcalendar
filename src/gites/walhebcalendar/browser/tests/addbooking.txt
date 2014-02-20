@@ -17,8 +17,8 @@ créé une requête ``bookingRequest``, l'envoi à l'application et renvoi le nu
 enregistré::
 
     >>> from datetime import date
-    >>> startDate = date(2012, 1, 1)
-    >>> endDate = date(2012, 1, 4)
+    >>> startDate = date(2035, 1, 1)
+    >>> endDate = date(2035, 1, 4)
     >>> notificationId = client.addBooking('AAAA1234', startDate, endDate)
 
 Comme ceci est la première notification, le numéro de notification est 1::
@@ -36,8 +36,8 @@ récupération de réservation entre les mêmes dates::
     >>> pprint(bookings[0].__dict__)
     {'_bookingType': 'booked',
      '_cgtId': 'AAAA1234',
-     '_endDate': datetime.date(2012, 1, 4),
-     '_startDate': datetime.date(2012, 1, 1)}
+     '_endDate': datetime.date(2035, 1, 4),
+     '_startDate': datetime.date(2035, 1, 1)}
 
 On constate bien que le type de réservation par défaut est le type `booked`.
 
@@ -47,8 +47,8 @@ Ajout d'une réservation indisponible
 Ajoutons maintenant une deuxième réservation pour le même hébergement à des dates
 différentes::
 
-    >>> newStartDate = date(2012, 2, 11)
-    >>> newEndDate = date(2012, 2, 16)
+    >>> newStartDate = date(2035, 2, 11)
+    >>> newEndDate = date(2035, 2, 16)
     >>> notificationId = client.addBooking('AAAA1234', newStartDate, newEndDate, 'unavailable')
 
 Si l'on récupère l'ensemble des réservations::
@@ -66,8 +66,8 @@ celui-ci::
     >>> pprint(bookings[1].__dict__)
     {'_bookingType': 'unavailable',
      '_cgtId': 'AAAA1234',
-     '_endDate': datetime.date(2012, 2, 16),
-     '_startDate': datetime.date(2012, 2, 11)}
+     '_endDate': datetime.date(2035, 2, 16),
+     '_startDate': datetime.date(2035, 2, 11)}
 
 On remarque que le type de réservation est bien de type `unavailable`
 
@@ -80,8 +80,8 @@ d'une réservation, autrement dit rendre disponible l'hébergement entre deux da
 Sur la réservation précédente entre le 11/02/12 et le 16/02/12 imaginons que l'utilisateur
 annule la réservation du 13/02/12 et du 14/02/12 pour l'hébergement 'AAAA1234'::
 
-    >>> availableStartDate = date(2012, 2, 13)
-    >>> availableEndDate = date(2012, 2, 14)
+    >>> availableStartDate = date(2035, 2, 13)
+    >>> availableEndDate = date(2035, 2, 14)
     >>> notificationId = client.addBooking('AAAA1234', availableStartDate, availableEndDate, 'available')
 
 Si l'on récupère l'ensemble des réservations::
@@ -98,24 +98,24 @@ La première réservation inchangée::
     >>> pprint(bookings[0].__dict__)
     {'_bookingType': 'booked',
      '_cgtId': 'AAAA1234',
-     '_endDate': datetime.date(2012, 1, 4),
-     '_startDate': datetime.date(2012, 1, 1)}
+     '_endDate': datetime.date(2035, 1, 4),
+     '_startDate': datetime.date(2035, 1, 1)}
 
 La deuxième réservations entre le 11/02/12 et le 12/02/12::
 
     >>> pprint(bookings[1].__dict__)
     {'_bookingType': 'unavailable',
      '_cgtId': 'AAAA1234',
-     '_endDate': datetime.date(2012, 2, 12),
-     '_startDate': datetime.date(2012, 2, 11)}
+     '_endDate': datetime.date(2035, 2, 12),
+     '_startDate': datetime.date(2035, 2, 11)}
 
 La troixième réservations entre le 15/02/12 et le 16/02/12::
 
     >>> pprint(bookings[2].__dict__)
     {'_bookingType': 'unavailable',
      '_cgtId': 'AAAA1234',
-     '_endDate': datetime.date(2012, 2, 16),
-     '_startDate': datetime.date(2012, 2, 15)}
+     '_endDate': datetime.date(2035, 2, 16),
+     '_startDate': datetime.date(2035, 2, 15)}
 
 On remarque que les réservations renvoyées sont ordonnées par date.
 
@@ -130,7 +130,7 @@ Imaginons que la réservation pour l'hébergement 'AAAA1234' du 15/02/12 doivent
 Nous ajouter une réservation pour cette date pour le même hébergement en spécifiant le type de réservation
 à réservé::
 
-    >>> client.addBooking('AAAA1234', date(2012, 2, 15), date(2012, 2, 15), 'booked')
+    >>> client.addBooking('AAAA1234', date(2035, 2, 15), date(2035, 2, 15), 'booked')
     4
 
 Nous nous retrouvons avec 4 réservations non consécutives::
@@ -144,16 +144,16 @@ La troixième réservations du 15/02/12 est maintenant à l'état réservé::
     >>> pprint(bookings[2].__dict__)
     {'_bookingType': 'booked',
      '_cgtId': 'AAAA1234',
-     '_endDate': datetime.date(2012, 2, 15),
-     '_startDate': datetime.date(2012, 2, 15)}
+     '_endDate': datetime.date(2035, 2, 15),
+     '_startDate': datetime.date(2035, 2, 15)}
 
 La quatrième réservation indisponible le 16/02/12::
 
     >>> pprint(bookings[3].__dict__)
     {'_bookingType': 'unavailable',
      '_cgtId': 'AAAA1234',
-     '_endDate': datetime.date(2012, 2, 16),
-     '_startDate': datetime.date(2012, 2, 16)}
+     '_endDate': datetime.date(2035, 2, 16),
+     '_startDate': datetime.date(2035, 2, 16)}
 
 
 Ajouter des jours à une réservation existante
@@ -162,11 +162,11 @@ Ajouter des jours à une réservation existante
 Pour ajouter des jours à une réservation il suffit d'enregistrer la réservation pour
 le même enregistrement avec les nouvelles dates.
 
-Prennons par exemple une extension pour la réservation du 01/01/2012 au 04/01/2012 et
-étendons la jusqu'au 09/01/2012. Il nous suffit d'enregistrer la réservation entre le
-05/01/2012 et le 09/01/2012::
+Prennons par exemple une extension pour la réservation du 01/01/2035 au 04/01/2035 et
+étendons la jusqu'au 09/01/2035. Il nous suffit d'enregistrer la réservation entre le
+05/01/2035 et le 09/01/2035::
 
-    >>> client.addBooking('AAAA1234', date(2012, 1, 5), date(2012, 1, 9))
+    >>> client.addBooking('AAAA1234', date(2035, 1, 5), date(2035, 1, 9))
     5
 
 Nous nous retrouvons avec les mêmes 4 réservations non consécutives::
@@ -181,8 +181,8 @@ Et si l'on regarde la première (dans l'ordre chronologique), nous obtenons bien
     >>> pprint(bookings[0].__dict__)
     {'_bookingType': 'booked',
      '_cgtId': 'AAAA1234',
-     '_endDate': datetime.date(2012, 1, 9),
-     '_startDate': datetime.date(2012, 1, 1)}
+     '_endDate': datetime.date(2035, 1, 9),
+     '_startDate': datetime.date(2035, 1, 1)}
 
 Gestion d'erreurs
 -----------------

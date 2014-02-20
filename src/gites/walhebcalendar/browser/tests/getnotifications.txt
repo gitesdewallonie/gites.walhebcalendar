@@ -15,8 +15,8 @@ Récupération simple avec 2 bornes
 Pour trouver des notifications il faut ajouter des reservations::
 
     >>> from datetime import date
-    >>> startDate = date(2012, 1, 1)
-    >>> endDate = date(2012, 1, 4)
+    >>> startDate = date(2035, 1, 1)
+    >>> endDate = date(2035, 1, 4)
     >>> client.addBooking('AAAA1234', startDate, endDate)
     1
     >>> client.addBooking('BBBB5678', startDate, endDate)
@@ -45,9 +45,9 @@ Une notification de reservation contient les informations suivantes::
     >>> pprint(notifications[0].__dict__)
     {'_bookingType': 'booked',
      '_cgtId': 'BBBB5678',
-     '_endDate': datetime.date(2012, 1, 4),
+     '_endDate': datetime.date(2035, 1, 4),
      '_notificationId': 2,
-     '_startDate': datetime.date(2012, 1, 1)}
+     '_startDate': datetime.date(2035, 1, 1)}
 
 Une notification d'annulation de réservation contient les informations suivantes::
 
@@ -55,9 +55,9 @@ Une notification d'annulation de réservation contient les informations suivante
     >>> pprint(notifications[1].__dict__)
     {'_bookingType': 'available',
      '_cgtId': 'BBBB5678',
-     '_endDate': datetime.date(2012, 1, 4),
+     '_endDate': datetime.date(2035, 1, 4),
      '_notificationId': 3,
-     '_startDate': datetime.date(2012, 1, 1)}
+     '_startDate': datetime.date(2035, 1, 1)}
 
 Récuparation avec 1 borne
 -------------------------
