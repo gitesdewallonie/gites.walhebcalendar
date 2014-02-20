@@ -1,14 +1,30 @@
 <configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:meta="http://namespaces.zope.org/meta"
            xmlns:grok="http://namespaces.zope.org/grok"
            i18n_domain="gites">
 
-    <include package="zope.browserpage" file="meta.zcml"/>
-    <include package="z3c.autoinclude" file="meta.zcml" />
-    <includeDependencies package="." />
-    <include file="profiles.zcml"/>
+  <meta:directives namespace="http://namespaces.zope.org/tales">
+
+    <meta:directive name="expressiontype"
+        schema="zope.browserpage.metadirectives.IExpressionTypeDirective"
+        handler="zope.browserpage.metaconfigure.expressiontype"
+        />
+
+    </meta:directives>
     <include package="Products.PluginRegistry"/>
+    <include package="Products.GenericSetup" file="meta.zcml"/>
     <include package="Products.GenericSetup"/>
     <include package="Products.PluggableAuthService"/>
+    <include package="collective.autopermission"/>
+
+    <include package="affinitic.pwmanager"/>
+    <include package="affinitic.zamqp"/>
+    <include package="z3c.soap"/>
+    <include package="grokcore.component" file="meta.zcml"/>
+    <include package="five.grok"/>
+    <include package="zope.browserpage" file="meta.zcml"/>
+    <include file="profiles.zcml"/>
+    <include package="walhebcalendar.db"/>
     <permission
         id="walhebcalendar.AddBooking"
         title="WalhebCalendar: Add Booking"/>
