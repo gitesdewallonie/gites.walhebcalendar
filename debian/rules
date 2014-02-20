@@ -65,7 +65,6 @@ install-website:
 	find ${BUILDDIR}/develop-eggs -type f -exec sed -i s%${BUILDDIR}%${INSTALLDIR}%g {} \;
 	cp -ap $(BUILDDIR)/eggs $(DEBIANCORE)/${INSTALLDIR}
 	cp -ap $(BUILDDIR)/parts/omelette $(DEBIANCORE)/${INSTALLDIR}/parts
-	cp -ap $(BUILDDIR)/parts/localfs $(DEBIANCORE)/${INSTALLDIR}/parts
 	rm $(DEBIANCORE)/${INSTALLDIR}/bin/instance
 	for i in $(find $(DEBIANCORE)/${INSTALLDIR}/parts/omelette -type l); do old_link=$(readlink -m $i); new_link=$(echo $old_link | sed  s%${BUILDDIR}/${INSTALLDIR}/); rm $i; ln -f -s $new_link $i; done
 	find $(DEBIANCORE)/${INSTALLDIR} -name "*.pyc" -delete;
