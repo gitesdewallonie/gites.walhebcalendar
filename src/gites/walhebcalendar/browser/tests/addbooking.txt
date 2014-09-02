@@ -212,10 +212,3 @@ L'application empêche l'enregistrement de tout autre type de réservation que `
     FaultException: Wrong booking type. Must be booked or available or unavailable
     ...
 
-L'application empêche l'enregistrement d'une réservation pour un numéro d'hébergement ne correspondant pas au format suivant: `[A-Z]{4}[0-9]{1,4}`
-
-    >>> client.addBooking('23', date(2015, 1, 1), date(2015, 1, 4))
-    Traceback (most recent call last):
-    ...
-    FaultException: Wrong CGT Id format. Must match [A-Z]{4}[0-9]{1,4}
-    ...
