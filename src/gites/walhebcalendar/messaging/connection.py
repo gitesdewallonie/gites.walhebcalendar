@@ -19,5 +19,5 @@ class WalhebCalendarConnection(BrokerConnection):
     virtual_host = "/walhebcalendar"
     hostname = getBrokerHost()
     port = 5672
-    userid = "walhebcalendar"
-    password = "tototo"
+    userid = "admin"
+    password = "walhebcalendar"

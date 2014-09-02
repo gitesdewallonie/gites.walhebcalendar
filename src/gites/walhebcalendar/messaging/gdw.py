@@ -43,7 +43,7 @@ def publishNewNotificationToGDW(notification, event):
     if notification.notf_user_id != 'gdw':
         publisher = getUtility(IPublisher, name='booking.update')
         publisher._register()
-        infos = dict(booking_type=notification.notf_booking_type,
+        infos = dict(booking_type=str(notification.notf_booking_type),
                      cgt_id=notification.notf_cgt_id,
                      start_date=notification.notf_start_date,
                      end_date=notification.notf_end_date,

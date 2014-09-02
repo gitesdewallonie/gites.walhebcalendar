@@ -94,3 +94,15 @@ class CalendarClient(object):
 
     def close(self):
         self.trace.close()
+
+
+def main():
+    from datetime import date
+    client = CalendarClient('http://localhost:6011/calendar', login='admin',
+                            passwd='admin')
+    startDate = date(2035, 1, 1)
+    endDate = date(2035, 1, 4)
+    print client.getBookings(startDate, endDate)
+    startDate = date(2015, 2, 16)
+    endDate = date(2015, 2, 19)
+    client.addBooking('GRLX4354', startDate, endDate, 'unavailable')

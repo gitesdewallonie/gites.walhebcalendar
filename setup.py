@@ -20,6 +20,9 @@ setup(name='gites.walhebcalendar',
       namespace_packages=['gites'],
       include_package_data=True,
       zip_safe=False,
+      entry_points={'console_scripts': [
+          'walhebclient = gites.walhebcalendar.client:main'],
+      },
       extras_require=dict(
             test=['zope.testing', 'plone.testing', 'mockito'],
             docs=['z3c.recipe.sphinxdoc',
