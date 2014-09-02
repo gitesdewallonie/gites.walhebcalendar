@@ -1,0 +1,25 @@
+web:
+  build: .
+  command: /code/bin/instance console 2>&1
+  ports:
+    - "6011:6011"
+  links:
+    - db
+    - amqp
+  volumes:
+    - .:/code
+db:
+  image: orchardup/postgresql
+  ports:
+    - "5432:5432"
+  environment:
+    POSTGRESQL_DB: walhebcalendar
+    POSTGRESQL_USER: walhebcalendar
+    POSTGRESQL_PASS: walhebcalendar
+amqp:
+  image: tutum/rabbitmq
+  ports:
+    - "5672:5672"
+    - "15672:15672"
+  environment:
+    RABBITMQ_PASS: walhebcalendar
