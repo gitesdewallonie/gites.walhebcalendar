@@ -42,4 +42,4 @@ Si vous avez des problèmes de 'Not authorized', vous pouvez passer les permissi
 
 TODO: trouver un meilleur moyen de ne pas avoir de 'Not authorized'
 
-Pour la suite du workflow, voir la doc de gites.calendar
+Pour la suite du workflow, voir la doc de https://github.com/gitesdewallonie/gites.calendar
