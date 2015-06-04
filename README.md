@@ -43,3 +43,9 @@ Si vous avez des problèmes de 'Not authorized', vous pouvez passer les permissi
 TODO: trouver un meilleur moyen de ne pas avoir de 'Not authorized'
 
 Pour la suite du workflow, voir la doc de https://github.com/gitesdewallonie/gites.calendar
+
+
+Schéma
+------
+
+![Walhebcalendar workflow](https://www.lucidchart.com/publicSegments/view/55706155-0af0-4db6-9278-59a90a0050c0/image.png)
