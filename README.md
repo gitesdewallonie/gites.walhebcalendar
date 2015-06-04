@@ -32,7 +32,7 @@ Assurez vous que l'utilisateur admin peut accéder aux virtual hosts '/, /walheb
 
 **Webservice**
 
-Installez le buildout comme d'habitude.
+Installez le buildout comme d'habitude, mais en changeant la valeur de **AMQP_BROKER_HOST** par **localhost** dans le buildout.cfg.
 
 Lancer l'instance zope: bin/instance fg
 
