@@ -10,3 +10,4 @@ local/
 parts/
 *.egg-info
 var/
+rabbitmqadmin
