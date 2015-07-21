@@ -103,6 +103,6 @@ def main():
     startDate = date(2035, 1, 1)
     endDate = date(2035, 1, 4)
     print client.getBookings(startDate, endDate)
-    startDate = date(2015, 2, 16)
-    endDate = date(2015, 2, 19)
+    startDate = date(2016, 2, 16)
+    endDate = date(2016, 2, 19)
     client.addBooking('GRLX4354', startDate, endDate, 'unavailable')

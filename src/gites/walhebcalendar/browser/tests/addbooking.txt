@@ -198,7 +198,7 @@ L'application empêche toute enregistrement de réservation dans le passé::
 L'application empêche que la date de début de réservation soit supérieur à la date
 de fin de réservation
 
-    >>> client.addBooking('AAAA1234', date(2015, 1, 4), date(2015, 1, 1))
+    >>> client.addBooking('AAAA1234', date(2019, 1, 4), date(2019, 1, 1))
     Traceback (most recent call last):
     ...
     FaultException: Start date is after end date
@@ -206,7 +206,7 @@ de fin de réservation
 
 L'application empêche l'enregistrement de tout autre type de réservation que `booked`, `unavailable` ou `available`
 
-    >>> client.addBooking('AAAA1234', date(2015, 1, 1), date(2015, 1, 4), 'nimportequoi')
+    >>> client.addBooking('AAAA1234', date(2019, 1, 1), date(2019, 1, 4), 'nimportequoi')
     Traceback (most recent call last):
     ...
     FaultException: Wrong booking type. Must be booked or available or unavailable

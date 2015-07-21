@@ -126,7 +126,7 @@ L'application empêche toute récupération de réservation dans le passé::
 L'application empêche que la date de début de réservation soit supérieur à la date
 de fin de réservation
 
-    >>> client.getBookings(date(2015, 1, 4), date(2015, 1, 1))
+    >>> client.getBookings(date(2019, 1, 4), date(2019, 1, 1))
     Traceback (most recent call last):
     ...
     FaultException: Start date is after end date
@@ -140,7 +140,7 @@ Avec une liste de 2000 hébergements au format 'AAAA0001', 'AAAA0002', ...
 
 Nous obtenons l'erreur suivante:
 
-    >>> client.getBookings(date(2015, 1, 1), date(2015, 1, 14), hebergementList)
+    >>> client.getBookings(date(2019, 1, 1), date(2019, 1, 14), hebergementList)
     Traceback (most recent call last):
     ...
     FaultException: Too many CGT ids. Maximum is 1000. If you provide no CGT id, the system will return the bookings for all CGT ids
