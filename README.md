@@ -1,11 +1,11 @@
 gites.walhebcalendar
 ====================
 
-gites.walhebcalendar offre des webservice permettant de consuler et modifier les disponibilités d'un gite de Wallonie.
+gites.walhebcalendar offre des webservices permettant de consulter et modifier les disponibilités d'un gîte de Wallonie.
 
 Pour plus d'informations sur les webservices, voir http://doc.walhebcalendar.be/
 
-Cependant, lorsqu'une disponibilité est mise à jour via ces webservices, la mise à jour ne se fait pas directement dans la base de données des gites de Wallonie. Un message sera envoyé à une queue RabbitMQ, celui ci sera consumé par un daemon qui vient du package gites.calendar. Les informations seront quand meme enregistrées dans une DB postgresql walhebcalendar.
+Cependant, lorsqu'une disponibilité est mise à jour via ces webservices, la mise à jour ne se fait pas directement dans la base de données des gîtes de Wallonie. Un message sera envoyé à une queue RabbitMQ, celui ci sera consumé par un daemon qui vient du package gites.calendar. Les informations seront quand même enregistrées dans une DB postgresql walhebcalendar.
 
 
 Déploiement localhost
@@ -15,7 +15,7 @@ Vu la complexité du workflow, voici les étapes à suivre pour pouvoir tester t
 
 **RabbitMQ**
 
-Assurez vous que RabbitMQ soit installé et lancer le serveur sur votre machine:
+Assurez-vous que RabbitMQ soit installé et lancez le serveur sur votre machine:
 
 rabbitmq-server
 
@@ -32,7 +32,7 @@ Assurez vous que l'utilisateur admin peut accéder aux virtual hosts '/, /walheb
 
 **Webservice**
 
-Installez le buildout comme d'habitude, mais en changeant la valeur de **AMQP_BROKER_HOST** par **localhost** dans le buildout.cfg.
+Installez le buildout comme d'habitude, mais en changeant la valeur de **AMQP_BROKER_HOST** par **localhost** dans le buildout.cfg. Le buildout utilise python 2.7.
 
 Lancer l'instance zope: bin/instance fg
 
