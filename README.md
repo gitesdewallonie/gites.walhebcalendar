@@ -19,15 +19,15 @@ Assurez-vous que RabbitMQ soit installé et lancez le serveur sur votre machine:
 
 rabbitmq-server
 
-Vous pouvez maintenant accéder à l'interface de management via l'url http://localhost:15672
+Vous pouvez maintenant accéder à l'interface de management via l'url http://localhost:15672 (il faudra éventuellement installer cette interface via la commande `rabbitmq-plugins enable rabbitmq_management`).
 
 On utilise le port AMQP par défaut de RabbitMQ: 5672, il n'y a donc rien à changer à ce niveau là.
 
-If faut par contre ajouter un utilisateur qui sera utilisé par un script de configuration. Ajoutez donc, via l'interface, un utilisateur admin:walhebcalendar qui possède le tag 'administrator'.
+If faut par contre ajouter un utilisateur qui sera utilisé par le script de configuration. Ajoutez donc, via l'interface, un utilisateur admin:walhebcalendar qui possède le tag 'administrator'. Lors de la première connexion, vous pouvez vous connecter avec l'utilisateur guest:guest.
 
-Lancer le script de configuration: ./setuprabbit.sh
+Lancez le script de configuration: ./setuprabbit.sh
 
-Assurez vous que l'utilisateur admin peut accéder aux virtual hosts '/, /walhebcalendar'.
+Assurez-vous que l'utilisateur admin peut accéder aux virtual hosts '/, /walhebcalendar'.
 
 
 **Webservice**
