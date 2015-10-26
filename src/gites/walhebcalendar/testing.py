@@ -9,6 +9,7 @@ import unittest2 as unittest
 from plone.testing import z2
 from gites.walhebcalendar.calendar import calendar_setup
 from walhebcalendar.db.testing import ZCMLLayer, WALHEBRDB
+from gites.walhebcalendar.zcml import parseZCML
 
 
 class Calendar(ZCMLLayer):
@@ -40,3 +41,5 @@ class TestFunctional(unittest.TestCase):
         import transaction
         transaction.commit()
         self.calendarUrl = self.app.calendar.absolute_url()
+        import gites.walhebcalendar.messaging.tests
+        parseZCML(gites.walhebcalendar.messaging.tests, 'testing.zcml')

@@ -23,11 +23,6 @@ class TestNewPublicationPublishingToGDW(TestFunctional):
         publisher = getUtility(IProducer, name='booking.update')
         self.assertEqual(len(publisher._pending_messages), 1)
         msg = publisher._pending_messages[0]
-        msgInfo = msg.get('info')
-        msgData = msg.get('data')
-        self.assertEqual(msgInfo.get('routing_key'), 'gdw')
-        self.assertEqual(msgData, {'booking_type': 'booked',
-                                   'cgt_id': 'AAAA0010',
-                                   'end_date': date(2035, 1, 2),
-                                   'notf_id': 1,
-                                   'start_date': date(2035, 1, 1)})
+        self.assertEqual(msg.get('routing_key'), 'gdw')
+        self.failUnless('booked' in msg.get('body'))
+        self.failUnless('AAAA0010' in msg.get('body'))
