@@ -34,6 +34,8 @@ Assurez-vous que l'utilisateur admin peut accéder aux virtual hosts '/, /walheb
 
 Installez le buildout comme d'habitude, mais en changeant la valeur de **AMQP_BROKER_HOST** par **localhost** dans le buildout.cfg. Le buildout utilise python 2.7.
 
+Pour que l'instance démarre, il faut avoir un serveur PostgreSQL sur la machine et avoir créé la base de donnée `walhebcalendar`.
+
 Lancer l'instance zope: bin/instance fg
 
 Après avoir configuré les webservice grace au .wsdl disponible, vous pouvez essayer de les lancer via l'url http://localhost:6011/calendar
