@@ -7,7 +7,7 @@ Copyright by Affinitic sprl
 """
 import os
 import grokcore.component as grok
-from affinitic.zamqp.connection import BrokerConnection
+from collective.zamqp.connection import BrokerConnection
 
 
 def getBrokerHost():
@@ -19,5 +19,5 @@ class WalhebCalendarConnection(BrokerConnection):
     virtual_host = "/walhebcalendar"
     hostname = getBrokerHost()
     port = 5672
-    userid = "admin"
+    username = "admin"
     password = "walhebcalendar"

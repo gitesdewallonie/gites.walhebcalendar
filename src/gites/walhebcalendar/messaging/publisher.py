@@ -6,10 +6,10 @@ Licensed under the GPL license, see LICENCE.txt for more details.
 Copyright by Affinitic sprl
 """
 import grokcore.component as grok
-from affinitic.zamqp.publisher import Publisher
+from collective.zamqp.producer import Producer
 
 
-class GitesCalendarUpdatePublisher(Publisher):
+class GitesCalendarUpdatePublisher(Producer):
     grok.name('booking.update')
     connection_id = 'walhebcalendar'
     exchange = 'booking.update'

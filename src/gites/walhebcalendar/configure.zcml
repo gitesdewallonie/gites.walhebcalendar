@@ -18,7 +18,7 @@
     <include package="collective.autopermission"/>
 
     <include package="affinitic.pwmanager"/>
-    <include package="affinitic.zamqp"/>
+    <include package="collective.zamqp"/>
     <include package="z3c.soap"/>
     <include package="grokcore.component" file="meta.zcml"/>
     <include package="five.grok"/>

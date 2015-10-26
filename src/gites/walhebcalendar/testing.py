@@ -16,9 +16,8 @@ class Calendar(ZCMLLayer):
     tested_package = gites.walhebcalendar
 
     def patchMessaging(self):
-        from affinitic.zamqp.publisher import Publisher
-        Publisher.backend = None
-        Publisher._finish = lambda x: x
+        from collective.zamqp.producer import Producer
+        Producer._finish = lambda x: x
 
     def setUp(self):
         super(Calendar, self).setUp()

@@ -6,7 +6,7 @@ Licensed under the GPL license, see LICENCE.txt for more details.
 Copyright by Affinitic sprl
 """
 import grokcore.component as grok
-from affinitic.zamqp.consumer import Consumer
+from collective.zamqp.consumer import Consumer
 from gites.walhebcalendar.messaging.interfaces import IGitesUpdate
 
 
@@ -17,4 +17,5 @@ class WalhebCalendarUpdateConsumer(Consumer):
     exchange_type = 'direct'
     routing_key = 'import'
     connection_id = 'walhebcalendar'
-    messageInterface = IGitesUpdate
+    auto_declare = True
+    marker = IGitesUpdate
