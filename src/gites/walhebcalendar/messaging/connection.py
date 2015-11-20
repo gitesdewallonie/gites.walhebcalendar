@@ -21,3 +21,4 @@ class WalhebCalendarConnection(BrokerConnection):
     port = 5672
     username = "admin"
     password = "walhebcalendar"
+    prefetch_count = 1
