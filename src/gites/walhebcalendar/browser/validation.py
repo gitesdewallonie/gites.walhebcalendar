@@ -97,7 +97,6 @@ class GetBookingRequestValidation(BaseValidation):
         """
         Run all validation checks
         """
-        self.testPastDates()
         self.testDateOrder()
         self.testLargeIds()
 
@@ -128,7 +127,6 @@ class AddBookingRequestValidation(BaseValidation):
         """
         Run all validation checks
         """
-        self.testPastDates()
         self.testDateOrder()
         self.testBookingType()
 
@@ -145,5 +143,4 @@ class CancelBookingRequestValidation(BaseValidation):
         """
         Run all validation checks
         """
-        self.testPastDates()
         self.testDateOrder()
