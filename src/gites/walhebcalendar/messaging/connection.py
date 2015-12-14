@@ -7,6 +7,8 @@ Copyright by Affinitic sprl
 """
 import os
 import grokcore.component as grok
+from zope.component import getUtility
+from affinitic.pwmanager.interfaces import IPasswordManager
 from collective.zamqp.connection import BrokerConnection
 
 
@@ -19,6 +21,14 @@ class WalhebCalendarConnection(BrokerConnection):
     virtual_host = "/walhebcalendar"
     hostname = getBrokerHost()
     port = 5672
-    username = "admin"
-    password = "walhebcalendar"
     prefetch_count = 1
+
+    @property
+    def username(self):
+        pwManager = getUtility(IPasswordManager, 'rabbitmq')
+        return pwManager.username
+
+    @property
+    def password(self):
+        pwManager = getUtility(IPasswordManager, 'rabbitmq')
+        return pwManager.password

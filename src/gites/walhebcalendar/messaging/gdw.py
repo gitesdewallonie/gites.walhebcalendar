@@ -10,6 +10,7 @@ from zope.lifecycleevent import IObjectCreatedEvent
 import grokcore.component as grok
 from collective.zamqp.interfaces import IMessageArrivedEvent, IProducer
 from walhebcalendar.db.interfaces import INotification
+from affinitic.pwmanager.interfaces import IPasswordManager
 from gites.walhebcalendar.client import CalendarClient
 from gites.walhebcalendar.messaging.interfaces import IGitesUpdate
 
@@ -18,7 +19,9 @@ from gites.walhebcalendar.messaging.interfaces import IGitesUpdate
 def consumeMessage(message, event):
     updateInfos = message.body
     calendarUrl = 'http://localhost:6011/calendar'
-    client = CalendarClient(calendarUrl, login='gdw', passwd='XXXXX')
+    pwManager = getUtility(IPasswordManager, 'walheb-gdw')
+    client = CalendarClient(calendarUrl, login='gdw',
+                            passwd=pwManager.password)
     updateType = updateInfos.get('typeOfSelection')
     bookTypeTranslation = {'loue': 'booked',
                            'indisp': 'unavailable',

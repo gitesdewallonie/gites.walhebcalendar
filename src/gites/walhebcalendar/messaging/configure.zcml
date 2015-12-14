@@ -1,6 +1,10 @@
 <configure xmlns="http://namespaces.zope.org/zope"
            xmlns:grok="http://namespaces.zope.org/grok"
+           xmlns:passmgr="http://affinitic.be/passmgr"
            i18n_domain="gites.walhebcalendar">
+
+  <passmgr:pwdfile name="rabbitmq" filename="rabbitpass"/>
+  <passmgr:pwdfile name="walheb-gdw" filename="walhebgdwpass"/>
 
   <grok:grok package=".connection"/>
   <grok:grok package=".consumer"/>
