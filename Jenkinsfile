@@ -1,5 +1,8 @@
 node()
 {
+
+   checkout scm
+
    sh "rm -f *.deb"
    sh "git checkout master"
    sh "git pull"
