@@ -1,11 +1,10 @@
 node()
 {
-
-   checkout scm
-
-   sh "rm -f *.deb"
-   sh "git checkout master"
-   sh "git pull"
-   sh "make deb"
-   sh "mv ../*.deb ."
+  stage 'checkout'
+  deleteDir()
+  checkout scm
+  stage 'build'
+  sh "make deb"
+  stage 'publish'
+  sh "make publish-deb"
 }

@@ -17,7 +17,7 @@ INSTALLDIR   := /home/gdw/$(PACKAGE)
 distribution := $(shell lsb_release -is)
 
 clean:
-	#rm -rf $(BUILDDIR)/
+	rm -rf $(BUILDDIR)/
 	dh_testdir
 	dh_testroot
 	rm -rf build
@@ -26,16 +26,17 @@ clean:
 
 build:
 	mkdir -p $(BUILDDIR)
+	cp -ap ./requirements.txt $(BUILDDIR)
 	cp -ap ./setup.py ./bootstrap.py $(BUILDDIR)
 	cp -apr docs $(BUILDDIR)
 	cp -apr src $(BUILDDIR)
 	cp -ap ./*.cfg $(BUILDDIR)
 	cp -ap ./*.txt $(BUILDDIR)
 	cp -ap ./*.md $(BUILDDIR)
-	cd $(BUILDDIR) && virtualenv -p python2 .
+	cd $(BUILDDIR) && virtualenv .
 	rm -rf $(BUILDDIR)/devel
 	mkdir -p $(BUILDDIR)/eggs
-	cd $(BUILDDIR) && bin/python bootstrap.py buildout:eggs-directory=$(BUILDDIR)/eggs
+	cd $(BUILDDIR) && bin/pip install -r requirements.txt
 	cd $(BUILDDIR) && bin/buildout -c buildout.cfg buildout:eggs-directory=$(BUILDDIR)/eggs
 	cd $(BUILDDIR) && bin/test
 	echo $(DEBIANCORE)
