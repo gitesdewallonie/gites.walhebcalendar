@@ -26,7 +26,8 @@ def consumeMessage(message, event):
     bookTypeTranslation = {'loue': 'booked',
                            'indisp': 'unavailable',
                            'libre': 'available'}
-    client.addBooking(updateInfos.get('cgtId'),
+    cgt_id = updateInfos.get('cgtId') or updateInfos.get('cgt_id')
+    client.addBooking(cgt_id,
                       updateInfos.get('start'),
                       updateInfos.get('end'),
                       bookingType=bookTypeTranslation.get(updateType))
