@@ -2,3 +2,5 @@ recursive-include src *
 recursive-include docs *
 global-exclude *pyc
 include sdedit.jar
+prune debian
+exclude Dockerfile Makefile buildout.cfg dev.cfg versions.cfg fig.yml setuprabbit.sh *.txt bootstrap.py
