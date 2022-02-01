@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.2 (unreleased)
+0.2 (2022-02-01)
 ----------------
 
 - Fix `python-dateutil` requirement name
