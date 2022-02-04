@@ -4,7 +4,7 @@ Changelog
 0.3 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Add environment variable for calendar client URL
 
 
 0.2 (2022-02-01)

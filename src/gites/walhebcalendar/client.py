@@ -6,11 +6,20 @@ Licensed under the GPL license, see LICENCE.txt for more details.
 Copyright by Affinitic sprl
 """
 import datetime
+import os
+
 from ZSI.auth import AUTH
 from tempfile import mkstemp
 from gites.walhebcalendar.zsi.booking_client import (bookingLocator, addBookingRequest,
                                                      getBookingsRequest, getNotificationsRequest,
                                                      cancelBookingRequest)
+
+
+def get_calendar_client_url():
+    return os.getenv(
+        "CALENDAR_CLIENT_URL_6011",
+        "http://localhost:6011/calendar"
+    )
 
 
 class CalendarClient(object):
@@ -98,7 +107,7 @@ class CalendarClient(object):
 
 def main():
     from datetime import date
-    client = CalendarClient('http://localhost:6011/calendar', login='admin',
+    client = CalendarClient(get_calendar_client_url(), login='admin',
                             passwd='admin')
     startDate = date(2035, 1, 1)
     endDate = date(2035, 1, 4)
